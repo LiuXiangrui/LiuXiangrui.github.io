@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="about">
+<meta property="og:url" content="https://liuxiangrui.github.io/about/index.html">
+<meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-31T02:05:56.000Z">
+<meta property="article:modified_time" content="2021-12-12T15:28:06.000Z">
+<meta property="article:author" content="Xiangrui Liu">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liuxiangrui.github.io/about/"/>
+
+
+
+
+
+  <title>高级运动矢量预测(AMVP) | Liu Xiangrui's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Liu Xiangrui's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/13/AMVP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Liu Xiangrui's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">高级运动矢量预测(AMVP)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-13T00:30:25+08:00">2021-12-13</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">视频编码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">29k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">29 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>AMVP利用空时域相邻MV的相关性，为当前PU建立MVP候选列表。编码器使用RDO选出最优MVP，仅需传输MV预测残差和最优MVP索引</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><ol>
+<li>构建MVP候选列表</li>
+<li>遍历候选列表，根据RDCost选择AMVP的最优候选MVP</li>
+<li>利用运动估计寻找最优MV</li>
+<li>更新帧间预测最优MVP</li>
+<li>编码MVP预测残差和MVP索引</li>
+</ol>
+<h2 id="空域候选列表构建"><a href="#空域候选列表构建" class="headerlink" title="空域候选列表构建"></a>空域候选列表构建</h2><p><img src="https://s2.loli.net/2021/12/16/KyAlG2Ms9kRJHQ6.jpg" alt="空域候选MV位置"></p>
+<ul>
+<li>空域候选列表长度为2，在当前PU的左侧和上方各产生一个候选</li>
+<li>当左侧或上方查询到第一个可用MV时，直接将该MV作为候选，同时终止在该方向上的查询</li>
+<li>左侧候选顺序为 $A_0 \rightarrow A_1 \rightarrow \text{scaled}, A_0 \rightarrow \text{scaled}, A_1$</li>
+<li>上方的候选顺序为 $B_0 \rightarrow B_1 \rightarrow B_2$</li>
+<li>当左侧无法产生候选时（PU不可用或模式为帧内预测），缩放的候选块 $\text{scaled}, B_0 \rightarrow \text{scaled}B_1, \rightarrow \text{scaled}B_2$ 参与空域候选列表构建</li>
+</ul>
+<h2 id="时域候选列表构建"><a href="#时域候选列表构建" class="headerlink" title="时域候选列表构建"></a>时域候选列表构建</h2><ul>
+<li>时域候选列表长度为1，构建方式与Merge模式相同</li>
+<li>将空域候选列表与时域候选列表合并，去除重复的候选MV</li>
+<li>若合并后MV候选列表长度不足2，则使用$(0,0)$填补</li>
+</ul>
+<h2 id="AMVP与Merge模式的区别："><a href="#AMVP与Merge模式的区别：" class="headerlink" title="AMVP与Merge模式的区别："></a>AMVP与Merge模式的区别：</h2><ul>
+<li>Merge模式是一种帧间编码模式，当前PU的MV直接由空域或时域上邻近的PU预测得到，不存在MVD</li>
+<li>AMVP是一种MV预测技术，存在MVD</li>
+<li>Merge候选列表长度为6，AMVP候选列表长度为2，且Merge模式额外包含HMVP和逐对的平均MVP两种候选MV</li>
+</ul>
+<h2 id="VTM平台对应代码"><a href="#VTM平台对应代码" class="headerlink" title="VTM平台对应代码"></a>VTM平台对应代码</h2><h3 id="涉及函数"><a href="#涉及函数" class="headerlink" title="涉及函数"></a>涉及函数</h3><ul>
+<li><code>EncoderLib::InterSearch::xEstimateMvPredAMVP()</code>：选出最优MVP</li>
+<li><code>CommonAnalyserLib::PU::fillMvpCand()</code>：建立候选列表</li>
+<li><code>EncoderLib::InterSearch::xMotionEstimation()</code>：运动估计寻找最优MV</li>
+<li><code>EncoderLib::InterSearch::xCheckBestMVP()</code>：选出最优MV对应的最优MVP</li>
+</ul>
+<h3 id="xEstimateMvPredAMVP"><a href="#xEstimateMvPredAMVP" class="headerlink" title="xEstimateMvPredAMVP"></a>xEstimateMvPredAMVP</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InterSearch::xEstimateMvPredAMVP</span><span class="params">( PredictionUnit&amp; pu, PelUnitBuf&amp; origBuf, RefPicList eRefPicList, <span class="keyword">int</span> iRefIdx, Mv&amp; rcMvPred, AMVPInfo&amp; rAMVPInfo, <span class="keyword">bool</span> bFilled, Distortion* puiDistBiP )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  Mv         cBestMv;</span><br><span class="line">  <span class="keyword">int</span>        iBestIdx   = <span class="number">0</span>;</span><br><span class="line">  Distortion uiBestCost = std::numeric_limits&lt;Distortion&gt;::<span class="built_in">max</span>();</span><br><span class="line">  <span class="keyword">int</span>        i;</span><br><span class="line"></span><br><span class="line">  AMVPInfo*  pcAMVPInfo = &amp;rAMVPInfo;  <span class="comment">// 获取AMVP信息</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Fill the MV Candidates</span></span><br><span class="line">  <span class="keyword">if</span> (!bFilled)</span><br><span class="line">  &#123;</span><br><span class="line">    PU::<span class="built_in">fillMvpCand</span>( pu, eRefPicList, iRefIdx, *pcAMVPInfo );  <span class="comment">// 构造AMVP候选列表</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// initialize Mvp index &amp; Mvp</span></span><br><span class="line">  iBestIdx = <span class="number">0</span>;</span><br><span class="line">  cBestMv  = pcAMVPInfo-&gt;mvCand[<span class="number">0</span>]; <span class="comment">// 初始化最优MVP为第一个MVP</span></span><br><span class="line"></span><br><span class="line">  PelUnitBuf predBuf = m_tmpStorageLCU.<span class="built_in">getBuf</span>( <span class="built_in">UnitAreaRelative</span>(*pu.cu, pu) );  </span><br><span class="line"></span><br><span class="line">  <span class="comment">//-- Check Minimum Cost.</span></span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span> ; i &lt; pcAMVPInfo-&gt;numCand; i++)  <span class="comment">// 遍历所有候选MVP，选择RDCost最小的MVP作为最佳候选</span></span><br><span class="line">  &#123;</span><br><span class="line">    Distortion uiTmpCost = <span class="built_in">xGetTemplateCost</span>( pu, origBuf, predBuf, pcAMVPInfo-&gt;mvCand[i], i, AMVP_MAX_NUM_CANDS, eRefPicList, iRefIdx );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( uiBestCost &gt; uiTmpCost )  <span class="comment">// 找到RDCost更小的候选</span></span><br><span class="line">    &#123;</span><br><span class="line">      uiBestCost     = uiTmpCost;</span><br><span class="line">      cBestMv        = pcAMVPInfo-&gt;mvCand[i];</span><br><span class="line">      iBestIdx       = i;</span><br><span class="line">      (*puiDistBiP)  = uiTmpCost;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Setting Best MVP</span></span><br><span class="line">  rcMvPred = cBestMv;  <span class="comment">// 设置最优MV</span></span><br><span class="line">  pu.mvpIdx[eRefPicList] = iBestIdx;  <span class="comment">// 设置最优索引</span></span><br><span class="line">  pu.mvpNum[eRefPicList] = pcAMVPInfo-&gt;numCand;  <span class="comment">// 设置参考数量</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fillMvpCand"><a href="#fillMvpCand" class="headerlink" title="fillMvpCand"></a>fillMvpCand</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PU::fillMvpCand</span><span class="params">(PredictionUnit &amp;pu, <span class="keyword">const</span> RefPicList &amp;eRefPicList, <span class="keyword">const</span> <span class="keyword">int</span> &amp;refIdx, AMVPInfo &amp;amvpInfo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CodingStructure &amp;cs = *pu.cs;</span><br><span class="line"></span><br><span class="line">  AMVPInfo *pInfo = &amp;amvpInfo;</span><br><span class="line"></span><br><span class="line">  pInfo-&gt;numCand = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (refIdx &lt; <span class="number">0</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//-- Get Spatial MV</span></span><br><span class="line">  Position posLT = pu.<span class="built_in">Y</span>().<span class="built_in">topLeft</span>();  <span class="comment">// 左上侧参考MV，即B2</span></span><br><span class="line">  Position posRT = pu.<span class="built_in">Y</span>().<span class="built_in">topRight</span>();  <span class="comment">// 右上侧参考MV，即B0</span></span><br><span class="line">  Position posLB = pu.<span class="built_in">Y</span>().<span class="built_in">bottomLeft</span>();  <span class="comment">// 左下侧参考MV，即A0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">bool</span> bAdded = <span class="built_in">addMVPCandUnscaled</span>( pu, eRefPicList, refIdx, posLB, MD_BELOW_LEFT, *pInfo );  <span class="comment">// 检查A0是否可用</span></span><br><span class="line">  <span class="keyword">if</span>( !bAdded )</span><br><span class="line">  &#123;</span><br><span class="line">    bAdded = <span class="built_in">addMVPCandUnscaled</span>( pu, eRefPicList, refIdx, posLB, MD_LEFT, *pInfo );  <span class="comment">// 检查A1是否可用</span></span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  <span class="comment">// Above predictor search</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">bool</span> bAdded = <span class="built_in">addMVPCandUnscaled</span>( pu, eRefPicList, refIdx, posRT, MD_ABOVE_RIGHT, *pInfo );  <span class="comment">// 检查B0是否可用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( !bAdded )</span><br><span class="line">    &#123;</span><br><span class="line">      bAdded = <span class="built_in">addMVPCandUnscaled</span>( pu, eRefPicList, refIdx, posRT, MD_ABOVE, *pInfo );  <span class="comment">// 检查B1是否可用</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>( !bAdded )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">addMVPCandUnscaled</span>( pu, eRefPicList, refIdx, posLT, MD_ABOVE_LEFT, *pInfo );  <span class="comment">// 检查B2是否可用</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pInfo-&gt;numCand; i++ )</span><br><span class="line">  &#123;</span><br><span class="line">    pInfo-&gt;mvCand[i].<span class="built_in">roundTransPrecInternal2Amvr</span>(pu.cu-&gt;imv);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>( pInfo-&gt;numCand == <span class="number">2</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span>( pInfo-&gt;mvCand[<span class="number">0</span>] == pInfo-&gt;mvCand[<span class="number">1</span>] )  <span class="comment">// 去除重复空域候选MV</span></span><br><span class="line">    &#123;</span><br><span class="line">      pInfo-&gt;numCand = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 当启用时域候选，空域候选数量少于2个，CU尺寸大于4x4时，建立时域候选列表</span></span><br><span class="line">  <span class="keyword">if</span> (cs.picHeader-&gt;<span class="built_in">getEnableTMVPFlag</span>() &amp;&amp; pInfo-&gt;numCand &lt; AMVP_MAX_NUM_CANDS &amp;&amp; (pu.<span class="built_in">lumaSize</span>().width + pu.<span class="built_in">lumaSize</span>().height &gt; <span class="number">12</span>))  </span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// Get Temporal Motion Predictor</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> refIdx_Col = refIdx;</span><br><span class="line"></span><br><span class="line">    Position posRB = pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>().<span class="built_in">offset</span>(<span class="number">-3</span>, <span class="number">-3</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> PreCalcValues&amp; pcv = *cs.pcv;</span><br><span class="line"></span><br><span class="line">    Position posC0;  <span class="comment">// 右下位置</span></span><br><span class="line">    <span class="keyword">bool</span> C0Avail = <span class="literal">false</span>;</span><br><span class="line">    Position posC1 = pu.<span class="built_in">Y</span>().<span class="built_in">center</span>();  <span class="comment">// 中心位置</span></span><br><span class="line">    Mv cColMv;  <span class="comment">// 同位MV</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> boundaryCond = ((posRB.x + pcv.minCUWidth) &lt; pcv.lumaWidth) &amp;&amp; ((posRB.y + pcv.minCUHeight) &lt; pcv.lumaHeight); </span><br><span class="line">    <span class="keyword">const</span> SubPic &amp;curSubPic = pu.cs-&gt;slice-&gt;<span class="built_in">getPPS</span>()-&gt;<span class="built_in">getSubPicFromPos</span>(pu.<span class="built_in">lumaPos</span>());</span><br><span class="line">    <span class="keyword">if</span> (curSubPic.<span class="built_in">getTreatedAsPicFlag</span>())</span><br><span class="line">    &#123;</span><br><span class="line">      boundaryCond = ((posRB.x + pcv.minCUWidth) &lt;= curSubPic.<span class="built_in">getSubPicRight</span>() &amp;&amp;</span><br><span class="line">                      (posRB.y + pcv.minCUHeight) &lt;= curSubPic.<span class="built_in">getSubPicBottom</span>()); <span class="comment">// 判断是否为边界，即最后一行且最后一列CU</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (boundaryCond)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">int</span> posYInCtu = posRB.y &amp; pcv.maxCUHeightMask;</span><br><span class="line">      <span class="keyword">if</span> (posYInCtu + <span class="number">4</span> &lt; pcv.maxCUHeight)  <span class="comment">// 判断是否为最后一列，但不是最后一行</span></span><br><span class="line">      &#123;</span><br><span class="line">        posC0 = posRB.<span class="built_in">offset</span>(<span class="number">4</span>, <span class="number">4</span>);</span><br><span class="line">        C0Avail = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( ( C0Avail &amp;&amp; <span class="built_in">getColocatedMVP</span>( pu, eRefPicList, posC0, cColMv, refIdx_Col, <span class="literal">false</span> ) ) || <span class="built_in">getColocatedMVP</span>( pu, eRefPicList, posC1, cColMv, refIdx_Col, <span class="literal">false</span> ) )</span><br><span class="line">    &#123;</span><br><span class="line">      cColMv.<span class="built_in">roundTransPrecInternal2Amvr</span>(pu.cu-&gt;imv);</span><br><span class="line">      pInfo-&gt;mvCand[pInfo-&gt;numCand++] = cColMv;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (pInfo-&gt;numCand &lt; AMVP_MAX_NUM_CANDS)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> currRefPOC = cs.slice-&gt;<span class="built_in">getRefPic</span>(eRefPicList, refIdx)-&gt;<span class="built_in">getPOC</span>();</span><br><span class="line">    <span class="built_in">addAMVPHMVPCand</span>(pu, eRefPicList, currRefPOC, *pInfo);  <span class="comment">// 加入时域候选MV</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (pInfo-&gt;numCand &gt; AMVP_MAX_NUM_CANDS)  <span class="comment">// 处理边界条件</span></span><br><span class="line">  &#123;</span><br><span class="line">    pInfo-&gt;numCand = AMVP_MAX_NUM_CANDS;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (pInfo-&gt;numCand &lt; AMVP_MAX_NUM_CANDS)</span><br><span class="line">  &#123;</span><br><span class="line">    pInfo-&gt;mvCand[pInfo-&gt;numCand] = <span class="built_in">Mv</span>( <span class="number">0</span>, <span class="number">0</span> );  <span class="comment">// 候选MVP不足2个，使用(0,0)填充</span></span><br><span class="line">    pInfo-&gt;numCand++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (Mv &amp;mv : pInfo-&gt;mvCand)</span><br><span class="line">  &#123;</span><br><span class="line">    mv.<span class="built_in">roundTransPrecInternal2Amvr</span>(pu.cu-&gt;imv);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="xCheckBestMVP"><a href="#xCheckBestMVP" class="headerlink" title="xCheckBestMVP"></a>xCheckBestMVP</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InterSearch::xCheckBestMVP</span> <span class="params">( RefPicList eRefPicList, Mv cMv, Mv&amp; rcMvPred, <span class="keyword">int</span>&amp; riMVPIdx, AMVPInfo&amp; amvpInfo, <span class="keyword">uint32_t</span>&amp; ruiBits, Distortion&amp; ruiCost, <span class="keyword">const</span> <span class="keyword">uint8_t</span> imv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( imv &gt; <span class="number">0</span> &amp;&amp; imv &lt; <span class="number">3</span> )  <span class="comment">// 异常情况</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  AMVPInfo* pcAMVPInfo = &amp;amvpInfo;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">CHECK</span>(pcAMVPInfo-&gt;mvCand[riMVPIdx] != rcMvPred, <span class="string">&quot;Invalid MV prediction candidate&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (pcAMVPInfo-&gt;numCand &lt; <span class="number">2</span>)  <span class="comment">// //候选数小于2直接返回</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  m_pcRdCost-&gt;<span class="built_in">setCostScale</span> ( <span class="number">0</span>    );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> iBestMVPIdx = riMVPIdx;</span><br><span class="line"></span><br><span class="line">  Mv pred = rcMvPred;</span><br><span class="line">  pred.<span class="built_in">changeTransPrecInternal2Amvr</span>(imv);</span><br><span class="line">  m_pcRdCost-&gt;<span class="built_in">setPredictor</span>( pred );</span><br><span class="line">  Mv mv = cMv;</span><br><span class="line">  mv.<span class="built_in">changeTransPrecInternal2Amvr</span>(imv);</span><br><span class="line">  <span class="keyword">int</span> iOrgMvBits = m_pcRdCost-&gt;<span class="built_in">getBitsOfVectorWithPredictor</span>(mv.<span class="built_in">getHor</span>(), mv.<span class="built_in">getVer</span>(), <span class="number">0</span>);  <span class="comment">// 当前MV的比特数</span></span><br><span class="line">  iOrgMvBits += m_auiMVPIdxCost[riMVPIdx][AMVP_MAX_NUM_CANDS];  <span class="comment">// 加上编码MVP索引的比特数</span></span><br><span class="line">  <span class="keyword">int</span> iBestMvBits = iOrgMvBits;  <span class="comment">// 初始化比特数</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> iMVPIdx = <span class="number">0</span>; iMVPIdx &lt; pcAMVPInfo-&gt;numCand; iMVPIdx++)  <span class="comment">// 遍历所有MVP</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (iMVPIdx == riMVPIdx)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 计算第iMVPIdx个MVP的比特消耗</span></span><br><span class="line">    pred = pcAMVPInfo-&gt;mvCand[iMVPIdx];</span><br><span class="line">    pred.<span class="built_in">changeTransPrecInternal2Amvr</span>(imv);</span><br><span class="line">    m_pcRdCost-&gt;<span class="built_in">setPredictor</span>( pred );</span><br><span class="line">    <span class="keyword">int</span> iMvBits = m_pcRdCost-&gt;<span class="built_in">getBitsOfVectorWithPredictor</span>(mv.<span class="built_in">getHor</span>(), mv.<span class="built_in">getVer</span>(), <span class="number">0</span>);</span><br><span class="line">    iMvBits += m_auiMVPIdxCost[iMVPIdx][AMVP_MAX_NUM_CANDS];  </span><br><span class="line">    <span class="keyword">if</span> (iMvBits &lt; iBestMvBits)  <span class="comment">// 比较当前MVP和最优MVP，选择最优MVP</span></span><br><span class="line">    &#123;</span><br><span class="line">      iBestMvBits = iMvBits;</span><br><span class="line">      iBestMVPIdx = iMVPIdx;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (iBestMVPIdx != riMVPIdx)  <span class="comment">//if changed  更新最优MVP信息</span></span><br><span class="line">  &#123;</span><br><span class="line">    rcMvPred = pcAMVPInfo-&gt;mvCand[iBestMVPIdx];</span><br><span class="line"></span><br><span class="line">    riMVPIdx = iBestMVPIdx;</span><br><span class="line">    <span class="keyword">uint32_t</span> uiOrgBits = ruiBits;</span><br><span class="line">    ruiBits = uiOrgBits - iOrgMvBits + iBestMvBits;</span><br><span class="line">    ruiCost = (ruiCost - m_pcRdCost-&gt;<span class="built_in">getCost</span>( uiOrgBits ))  + m_pcRdCost-&gt;<span class="built_in">getCost</span>( ruiBits );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Xiangrui Liu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://liuxiangrui.github.io/2021/12/13/AMVP/" title="高级运动矢量预测(AMVP)">https://liuxiangrui.github.io/2021/12/13/AMVP/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/" rel="tag"># 帧间预测</a>
+          
+            <a href="/tags/VVC/" rel="tag"># VVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/13/Merge/" rel="next" title="Merge模式">
+                <i class="fa fa-chevron-left"></i> Merge模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/LiuXiangrui" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:301100322@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E5%9F%9F%E5%80%99%E9%80%89%E5%88%97%E8%A1%A8%E6%9E%84%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">空域候选列表构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E5%80%99%E9%80%89%E5%88%97%E8%A1%A8%E6%9E%84%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">时域候选列表构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMVP%E4%B8%8EMerge%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">AMVP与Merge模式的区别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VTM%E5%B9%B3%E5%8F%B0%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81"><span class="nav-number">6.</span> <span class="nav-text">VTM平台对应代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%89%E5%8F%8A%E5%87%BD%E6%95%B0"><span class="nav-number">6.1.</span> <span class="nav-text">涉及函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xEstimateMvPredAMVP"><span class="nav-number">6.2.</span> <span class="nav-text">xEstimateMvPredAMVP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fillMvpCand"><span class="nav-number">6.3.</span> <span class="nav-text">fillMvpCand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xCheckBestMVP"><span class="nav-number">6.4.</span> <span class="nav-text">xCheckBestMVP</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-block">
+          <div class="links-of-blogroll-title">
+            <!-- modify icon to fire by szw -->
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            近期文章
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/AMVP/" title="高级运动矢量预测(AMVP)" target="_blank">高级运动矢量预测(AMVP)</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/Merge/" title="Merge模式" target="_blank">Merge模式</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/" title="VVC新技术与概念" target="_blank">VVC新技术与概念</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" title="HEVC术语缩写对照表" target="_blank">HEVC术语缩写对照表</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/12/VVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" title="VVC术语缩写对照表" target="_blank">VVC术语缩写对照表</a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiangrui Liu</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">NaNm</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点总阅读次数">NaN:aN</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
