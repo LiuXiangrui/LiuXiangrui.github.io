@@ -48,13 +48,18 @@ struct ModeInfo
       1. 调用函数 `InterPrediction::motionCompensation` 进行运动补偿获得预测值，并使用DMVR对MV进行细化。
       2. 根据预测值的亮度分量计算失真 `uiSad`,并根据 `uiSad` 和比特率 `fracBits` 计算损失 `cost`
       3. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
-   2. 若CIIP模式可用，则遍历RD模式列表中的前几个模式（最多遍历4个模式）
+   2. 若CIIP模式启用标志`isIntrainterEnabled=True`，则遍历 `RdModeList` 前 `NUM_MRG_SATD_CAND` 个模式
       1. 调用函数 `IntraPrediction::geneWeightedPred` 计算CIIP预测像素
       2. 计算失真 `uiSad` 和损失 `cost`
       3. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
    3. 遍历MMVD候选模式
-      1. 根据初始MV派生扩展MVMV
+      1. 调用函数 `MergeCtx::setMmvdMergeCandiInfo` 根据初始MV派生扩展MV
       2. 调用函数 `InterPrediction::motionCompensation` 进行运动补偿获得预测值
       3. 计算失真 `uiSad`和损失 `cost`
       4. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
    4. 若 `RdModeList[i] > RdModeList[0] * MRG_FAST_RATIO`， 则将 `uiNumMrgSATDCand` 设置为 `i`
+
+#### 两次遍历 `RdModeList` 以确定常规Merge模式和Skip模式，选择最优Merge候选
+1. 初始化当前Merge候选的模式
+2. 调用 `EncCu::xEncodeInterResidual` 函数编码当前Merge候选的预测残差，并在该函数中完成候选的率失真的比较
+
