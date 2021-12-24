@@ -76,12 +76,12 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="https://liuxiangrui.github.io/about/index.html">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="https://liuxiangrui.github.io/categories/index.html">
 <meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
 <meta property="og:locale">
-<meta property="article:published_time" content="2017-05-31T02:05:56.000Z">
-<meta property="article:modified_time" content="2021-12-12T15:28:06.000Z">
+<meta property="article:published_time" content="2021-12-12T13:05:36.000Z">
+<meta property="article:modified_time" content="2021-12-12T15:04:43.000Z">
 <meta property="article:author" content="Xiangrui Liu">
 <meta name="twitter:card" content="summary">
 
@@ -115,7 +115,7 @@
 
 
 
-  <link rel="canonical" href="https://liuxiangrui.github.io/about/"/>
+  <link rel="canonical" href="https://liuxiangrui.github.io/categories/"/>
 
 
 
@@ -392,13 +392,17 @@
 <li>当左侧或上方查询到第一个可用MV时，直接将该MV作为候选，同时终止在该方向上的查询</li>
 <li>左侧候选顺序为 $A_0 \rightarrow A_1 \rightarrow \text{scaled}, A_0 \rightarrow \text{scaled}, A_1$</li>
 <li>上方的候选顺序为 $B_0 \rightarrow B_1 \rightarrow B_2$</li>
-<li>当左侧无法产生候选时（PU不可用或模式为帧内预测），缩放的候选块 $\text{scaled}, B_0 \rightarrow \text{scaled}B_1, \rightarrow \text{scaled}B_2$ 参与空域候选列表构建<h2 id="时域候选列表构建"><a href="#时域候选列表构建" class="headerlink" title="时域候选列表构建"></a>时域候选列表构建</h2></li>
+<li>当左侧无法产生候选时（PU不可用或模式为帧内预测），缩放的候选块 $\text{scaled}, B_0 \rightarrow \text{scaled}B_1, \rightarrow \text{scaled}B_2$ 参与空域候选列表构建</li>
+</ul>
+<h2 id="时域候选列表构建"><a href="#时域候选列表构建" class="headerlink" title="时域候选列表构建"></a>时域候选列表构建</h2><ul>
 <li>时域候选列表长度为1，构建方式与Merge模式相同</li>
 <li>将空域候选列表与时域候选列表合并，去除重复的候选MV</li>
-<li>若合并后MV候选列表长度不足2，则使用$(0,0)$填补<h2 id="AMVP与Merge模式的区别："><a href="#AMVP与Merge模式的区别：" class="headerlink" title="AMVP与Merge模式的区别："></a>AMVP与Merge模式的区别：</h2></li>
+<li>若合并后MV候选列表长度不足2，则使用$(0,0)$填补</li>
+</ul>
+<h2 id="AMVP与Merge模式的区别："><a href="#AMVP与Merge模式的区别：" class="headerlink" title="AMVP与Merge模式的区别："></a>AMVP与Merge模式的区别：</h2><ul>
 <li>Merge模式是一种帧间编码模式，当前PU的MV直接由空域或时域上邻近的PU预测得到，不存在MVD</li>
 <li>AMVP是一种MV预测技术，存在MVD</li>
-<li>Merge候选列表长度为6，AMVP候选列表长度为2，且Merge模式包含HMVP和逐对的平均MVP两种类型的候选MV</li>
+<li>Merge候选列表长度为6，AMVP候选列表长度为2，且Merge模式额外包含HMVP和逐对的平均MVP两种候选MV</li>
 </ul>
 <h2 id="VTM平台对应代码"><a href="#VTM平台对应代码" class="headerlink" title="VTM平台对应代码"></a>VTM平台对应代码</h2><h3 id="涉及函数"><a href="#涉及函数" class="headerlink" title="涉及函数"></a>涉及函数</h3><ul>
 <li><code>EncoderLib::InterSearch::xEstimateMvPredAMVP()</code>：选出最优MVP</li>
@@ -674,193 +678,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Liu Xiangrui's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/" itemprop="url">VVC新技术与概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-12T21:08:13+08:00">2021-12-12</time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
-                    <span itemprop="name">视频编码</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">2.2k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">2 mins.</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文整理了在阅读VVC技术文档和代码过程中遇到的新技术与概念</p>
-<h2 id="GDR（Gradual-Decoding-Refresh）"><a href="#GDR（Gradual-Decoding-Refresh）" class="headerlink" title="GDR（Gradual Decoding Refresh）"></a>GDR（Gradual Decoding Refresh）</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>将一帧完整的I帧分成若干I-Slice，并放置到其前面若干连续的P帧中，这些包含I-Slice的P帧称为GDR帧</p>
-<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
-<li>通过传输GDR帧，能够为后续帧提供I帧参考，进而阻断误差累积</li>
-<li>与直接传输完整I帧相比，能够避免码率剧烈波动，减少对网络带宽的冲击，降低网络延时，起到平滑码率的作用</li>
-<li>GDR适合用于广播/会议等不需要频繁随机访问，且对网络延时要求较高的场景</li>
-</ul>
-<h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><ul>
-<li>在H.264与H.265中GDR作为SEI的可选项提供，在H.266中作为一种新的NAL单元类型提供</li>
-</ul>
-<h2 id="IBC-Intra-Block-Copy"><a href="#IBC-Intra-Block-Copy" class="headerlink" title="IBC (Intra Block Copy)"></a>IBC (Intra Block Copy)</h2><p>Intra block copy(IBC)是屏幕内容编码(Screen Content Coding,SCC)的主要技术之一。IBC是块级的编码模式，在编码端会使用块匹配(Block Matching,BM)技术为每个CU寻找最优匹配块，并计算块向量(block vector)。块向量表明当前块和最优匹配块的位置关系。</p>
-<p>当CU使用IBC模式编码，其亮度分量的块向量使用整数精度表示，色度分量的块向量四舍五入到整数精度。当结合AMVR技术时，块向量可以在1像素精度和4像素精度间切换。</p>
-<p>IBC模式只用于亮度分量的宽和高都小于等于64的CU。</p>
-<p>在编码端，可以对IBC模式使用基于哈希的运动估计技术。编码器会为宽或高不大于16的块进行RD检查。对于non-merge模式，首先使用基于哈希的搜索进行块向量搜索，如果哈希搜索没有返回有效的候选项则使用基于局部搜索的BM。</p>
-<p>在基于哈希的搜索中，当前块和参考块间的哈希键值匹配(32-bit CRC)操作对所有允许尺寸的块进行。对当前图像所有位置的哈希键值计算都是基于4x4子块进行的。对于较大的当前块，只有其所有4x4子块的哈希键值与参考块对应位置哈希键值都匹配时，才将其作为匹配块。如果多个块的哈希键值都和当前块匹配，则选择块向量代价最小的一个。</p>
-<p>在BM搜索中，搜索范围包括前面的CTU和当前CTU。</p>
-<p>在CU级上有一个IBC标志位表示IBC AMVP模式或IBC skip/merge模式：</p>
-<p>IBC skip/merge模式：一个merge候选项索引用于表示使用哪个相邻IBC块的块向量作为预测值。merge列表由空域、HMVP和pairwise候选项构成。</p>
-<p>IBC AMVP模式：BVD(block vector difference)和MVD(motion vector difference)编码方式一样。块向量有两个候选预测值分别来自左侧和上侧IBC块。当两个候选项都不可用时，使用一个默认块向量作为预测值。需要传输一个标志位表示使用的块向量预测值的索引。</p>
-<h2 id="MER-Merge-Estimation-Region"><a href="#MER-Merge-Estimation-Region" class="headerlink" title="MER (Merge Estimation Region)"></a>MER (Merge Estimation Region)</h2><p>对于当前CU的Merge候选列表推导过程中，不包括与当前CU在同一MER内的候选块，即判断相邻块可用时，仅使用不同MER内的相邻块。在编码器侧选择MER大小，并在序列参数集中以log2_parallel_merge_level_minus2表示。对于当前CU的Merge候选列表推导过程中，不包括与当前CU在同一MER内的候选块，即判断相邻块可用时，仅使用不同MER内的相邻块。在编码器侧选择MER大小，并在序列参数集中以log2_parallel_merge_level_minus2表示。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1073,6 +890,193 @@
 <td align="right">TODO</td>
 </tr>
 </tbody></table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Liu Xiangrui's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/" itemprop="url">VVC新技术与概念</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-12T21:08:13+08:00">2021-12-12</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">视频编码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">2.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">2 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文整理了在阅读VVC技术文档和代码过程中遇到的新技术与概念</p>
+<h2 id="GDR（Gradual-Decoding-Refresh）"><a href="#GDR（Gradual-Decoding-Refresh）" class="headerlink" title="GDR（Gradual Decoding Refresh）"></a>GDR（Gradual Decoding Refresh）</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>将一帧完整的I帧分成若干I-Slice，并放置到其前面若干连续的P帧中，这些包含I-Slice的P帧称为GDR帧</p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>通过传输GDR帧，能够为后续帧提供I帧参考，进而阻断误差累积</li>
+<li>与直接传输完整I帧相比，能够避免码率剧烈波动，减少对网络带宽的冲击，降低网络延时，起到平滑码率的作用</li>
+<li>GDR适合用于广播/会议等不需要频繁随机访问，且对网络延时要求较高的场景</li>
+</ul>
+<h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><ul>
+<li>在H.264与H.265中GDR作为SEI的可选项提供，在H.266中作为一种新的NAL单元类型提供</li>
+</ul>
+<h2 id="IBC-Intra-Block-Copy"><a href="#IBC-Intra-Block-Copy" class="headerlink" title="IBC (Intra Block Copy)"></a>IBC (Intra Block Copy)</h2><p>Intra block copy(IBC)是屏幕内容编码(Screen Content Coding,SCC)的主要技术之一。IBC是块级的编码模式，在编码端会使用块匹配(Block Matching,BM)技术为每个CU寻找最优匹配块，并计算块向量(block vector)。块向量表明当前块和最优匹配块的位置关系。</p>
+<p>当CU使用IBC模式编码，其亮度分量的块向量使用整数精度表示，色度分量的块向量四舍五入到整数精度。当结合AMVR技术时，块向量可以在1像素精度和4像素精度间切换。</p>
+<p>IBC模式只用于亮度分量的宽和高都小于等于64的CU。</p>
+<p>在编码端，可以对IBC模式使用基于哈希的运动估计技术。编码器会为宽或高不大于16的块进行RD检查。对于non-merge模式，首先使用基于哈希的搜索进行块向量搜索，如果哈希搜索没有返回有效的候选项则使用基于局部搜索的BM。</p>
+<p>在基于哈希的搜索中，当前块和参考块间的哈希键值匹配(32-bit CRC)操作对所有允许尺寸的块进行。对当前图像所有位置的哈希键值计算都是基于4x4子块进行的。对于较大的当前块，只有其所有4x4子块的哈希键值与参考块对应位置哈希键值都匹配时，才将其作为匹配块。如果多个块的哈希键值都和当前块匹配，则选择块向量代价最小的一个。</p>
+<p>在BM搜索中，搜索范围包括前面的CTU和当前CTU。</p>
+<p>在CU级上有一个IBC标志位表示IBC AMVP模式或IBC skip/merge模式：</p>
+<p>IBC skip/merge模式：一个merge候选项索引用于表示使用哪个相邻IBC块的块向量作为预测值。merge列表由空域、HMVP和pairwise候选项构成。</p>
+<p>IBC AMVP模式：BVD(block vector difference)和MVD(motion vector difference)编码方式一样。块向量有两个候选预测值分别来自左侧和上侧IBC块。当两个候选项都不可用时，使用一个默认块向量作为预测值。需要传输一个标志位表示使用的块向量预测值的索引。</p>
+<h2 id="MER-Merge-Estimation-Region"><a href="#MER-Merge-Estimation-Region" class="headerlink" title="MER (Merge Estimation Region)"></a>MER (Merge Estimation Region)</h2><p>对于当前CU的Merge候选列表推导过程中，不包括与当前CU在同一MER内的候选块，即判断相邻块可用时，仅使用不同MER内的相邻块。在编码器侧选择MER大小，并在序列参数集中以log2_parallel_merge_level_minus2表示。对于当前CU的Merge候选列表推导过程中，不包括与当前CU在同一MER内的候选块，即判断相邻块可用时，仅使用不同MER内的相邻块。在编码器侧选择MER大小，并在序列参数集中以log2_parallel_merge_level_minus2表示。</p>
 
           
         
@@ -1775,11 +1779,11 @@
               </li>
             
               <li class="recent_posts_li">
-                <a href="/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/" title="VVC新技术与概念" target="_blank">VVC新技术与概念</a>
+                <a href="/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" title="HEVC术语缩写对照表" target="_blank">HEVC术语缩写对照表</a>
               </li>
             
               <li class="recent_posts_li">
-                <a href="/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" title="HEVC术语缩写对照表" target="_blank">HEVC术语缩写对照表</a>
+                <a href="/2021/12/12/VVC%E6%96%B0%E6%A6%82%E5%BF%B5/" title="VVC新技术与概念" target="_blank">VVC新技术与概念</a>
               </li>
             
               <li class="recent_posts_li">
@@ -1811,7 +1815,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">35k</span>
   
 
   
@@ -1820,7 +1824,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点总阅读次数">NaN:aN</span>
+    <span title="站点总阅读次数">35 mins.</span>
   
 </div>
 

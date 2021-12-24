@@ -26,16 +26,19 @@ AMVP利用空时域相邻MV的相关性，为当前PU建立MVP候选列表。编
 - 左侧候选顺序为 $A_0 \rightarrow A_1 \rightarrow \text{scaled}\, A_0 \rightarrow \text{scaled}\, A_1$
 - 上方的候选顺序为 $B_0 \rightarrow B_1 \rightarrow B_2$
 - 当左侧无法产生候选时（PU不可用或模式为帧内预测），缩放的候选块 $\text{scaled}\, B_0 \rightarrow \text{scaled}B_1, \rightarrow \text{scaled}B_2$ 参与空域候选列表构建
+
 ## 时域候选列表构建
 - 时域候选列表长度为1，构建方式与Merge模式相同
 - 将空域候选列表与时域候选列表合并，去除重复的候选MV
 - 若合并后MV候选列表长度不足2，则使用$(0,0)$填补
+
 ## AMVP与Merge模式的区别：
 - Merge模式是一种帧间编码模式，当前PU的MV直接由空域或时域上邻近的PU预测得到，不存在MVD
 - AMVP是一种MV预测技术，存在MVD
-- Merge候选列表长度为6，AMVP候选列表长度为2，且Merge模式包含HMVP和逐对的平均MVP两种类型的候选MV
+- Merge候选列表长度为6，AMVP候选列表长度为2，且Merge模式额外包含HMVP和逐对的平均MVP两种候选MV
 
 ## VTM平台对应代码
+
 ### 涉及函数
 - `EncoderLib::InterSearch::xEstimateMvPredAMVP()`：选出最优MVP
 - `CommonAnalyserLib::PU::fillMvpCand()`：建立候选列表
@@ -89,7 +92,6 @@ void InterSearch::xEstimateMvPredAMVP( PredictionUnit& pu, PelUnitBuf& origBuf, 
 ```
 
 ### fillMvpCand
-
 ```c++
 void PU::fillMvpCand(PredictionUnit &pu, const RefPicList &eRefPicList, const int &refIdx, AMVPInfo &amvpInfo)
 {
