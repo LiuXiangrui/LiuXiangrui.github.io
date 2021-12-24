@@ -9,25 +9,37 @@ categories: 视频编码
 mathjax: true
 ---
 
-# void EncCu::xCheckRDCostMerge2Nx2N
-## 输入
+# 定义
+```c++
+   void EncCu::xCheckRDCostMerge2Nx2N( CodingStructure *&tempCS, CodingStructure *&bestCS, Partitioner &partitioner, const EncTestMode& encTestMode )
+```
+
+# 输入
 - `CodingStructure *&tempCS`
 - `CodingStructure *&bestCS`
 - `Partitioner &partitioner`
 - `const EncTestMode& encTestMode`
 
-## 功能
+# 功能
 `xCheckRDCostMerge2Nx2N` 函数根据SATD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，带有运动矢量差的Merge模式(MMVD)以及帧内帧间联合预测模式(CIIP)
 
-## 流程
-### 获取Merge模式候选列表
-   1. 调用 `PU::getInterMergeCandidates` 函数获取常规Merge模式候选列表
-   2. 调用 `PU::getInterMMVDMergeCandidates` 函数获取MMVD模式候选列表
-### 初始化候选Merge模式信息列表 `RdModeList`
+# 流程
+## 获取Merge模式候选列表
+### 1. 调用 `PU::getInterMergeCandidates` 函数获取常规Merge模式候选列表
+```c++
+   PU::getInterMergeCandidates(pu, mergeCtx, 0);
+```
+### 2. 调用 `PU::getInterMMVDMergeCandidates` 函数获取MMVD模式候选列表
+```c++
+   PU::getInterMMVDMergeCandidates(pu, mergeCtx);
+```
+## 初始化候选Merge模式信息列表
 
-#### 候选Merge模式信息列表长度=常规Merge候选数量 `MRG_MAX_NUM_CANDS` + MMVD候选数量 `MMVD_ADD_NUM`
-
-#### 模式信息 `ModeInfo` 定义
+### 定义
+```c++
+  static_vector<ModeInfo, MRG_MAX_NUM_CANDS + MMVD_ADD_NUM>  RdModeList;  
+```
+### 模式信息 `ModeInfo` 定义
 ```c++
 struct ModeInfo
 {
@@ -38,33 +50,164 @@ struct ModeInfo
     // ... 省略构造函数
 };
 ```
+### 遍历常规Merge和MMVD的候选MVP，加入候选模式列表
+```c++
+   const int candNum = mergeCtx.numValidMergeCand + (tempCS->sps->getUseMMVD() ? std::min<int>(MMVD_BASE_MV_NUM, mergeCtx.numValidMergeCand) * MMVD_MAX_REFINE_NUM : 0);  
 
-#### 使用SATD-Cost进行粗选，缩减候选数量至 `uiNumMrgSATDCand`
-1. 获取当前块在缓存中的最佳编码模式，根据其最佳模式确定缩减后模式数量 
-2. 若最佳模式为Skip模式，则 `uiNumMrgSATDCand` 为可用常规Merge模式数量 `numValidMergeCand`
-3. 若最佳模式为MMVD Skip模式，则`uiNumMrgSATDCand` 为可用常规Merge模式数量 + MMVD模式数量
-4. 若最佳模式不是Skip模式，则根据候选模式的SATD-Cost确定 `uiNumMrgSATDCand` 
-   1. 遍历常规Merge候选模式
-      1. 调用函数 `InterPrediction::motionCompensation` 进行运动补偿获得预测值，并使用DMVR对MV进行细化。
-      2. 根据预测值的亮度分量计算SAD失真 `uiSad`,并根据 `uiSad` 和比特率 `fracBits` 计算损失 `cost`
-      3. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
-   2. 若CIIP模式启用标志`isIntrainterEnabled=True`，则遍历 `RdModeList` 前 `NUM_MRG_SATD_CAND` 个模式
-      1. 调用函数 `IntraPrediction::geneWeightedPred` 计算CIIP预测像素
-      2. 计算SAD失真 `uiSad` 和损失 `cost`
-      3. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
-   3. 遍历MMVD候选模式
-      1. 调用函数 `MergeCtx::setMmvdMergeCandiInfo` 根据初始MV派生扩展MV
-      2. 调用函数 `InterPrediction::motionCompensation` 进行运动补偿获得预测值
-      3. 计算SAD失真 `uiSad`和损失 `cost`
-      4. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
-   4. 若 `RdModeList[i] > RdModeList[0] * MRG_FAST_RATIO`， 则将 `uiNumMrgSATDCand` 设置为 `i`
+   for (int i = 0; i < candNum; i++) 
+   {
+      if (i < mergeCtx.numValidMergeCand)
+      {
+         RdModeList.push_back(ModeInfo(i, true, false, false));
+      }
+      else
+      {
+         RdModeList.push_back(ModeInfo(std::min(MMVD_ADD_NUM, i - mergeCtx.numValidMergeCand), false, true, false));
+      }
+   }
+```
+## 使用SATD-Cost进行粗选，缩减候选数量至 `uiNumMrgSATDCand`
+### 1. 获取当前块在缓存中的最佳编码模式
+```c++
+   bestIsSkip       = false;
 
-#### 两次遍历 `RdModeList` 以确定常规Merge模式和Skip模式，选择最优Merge候选
-1. 初始化当前Merge候选的模式
+   if( auto blkCache = dynamic_cast< CacheBlkInfoCtrl* >( m_modeCtrl ) )
+   {
+   if (slice.getSPS()->getIBCFlag())
+   {
+      ComprCUCtx cuECtx = m_modeCtrl->getComprCUCtx();
+      bestIsSkip = blkCache->isSkip(tempCS->area) && cuECtx.bestCU;
+   }
+   else
+   bestIsSkip = blkCache->isSkip( tempCS->area );  // 此处缩进有问题，判断当前块在缓存中的最佳编码模式是否为Skip
+   bestIsMMVDSkip = blkCache->isMMVDSkip(tempCS->area);
+   }
+
+   if (isIntrainterEnabled) // always perform low complexity check
+   {
+   bestIsSkip = false;
+   }
+```
+### 2. 若最佳模式为Skip模式，则 `uiNumMrgSATDCand` 为可用常规Merge模式数量 `numValidMergeCand`
+```c++
+   uiNumMrgSATDCand = mergeCtx.numValidMergeCand;
+```
+### 3. 若最佳模式为MMVD Skip模式，则`uiNumMrgSATDCand` 为可用常规Merge模式数量 + MMVD模式数量
+```c++
+   if (bestIsMMVDSkip  ) 
+   {
+   uiNumMrgSATDCand = mergeCtx.numValidMergeCand + ((mergeCtx.numValidMergeCand > 1) ? MMVD_ADD_NUM : MMVD_ADD_NUM >> 1);
+   }
+```
+### 4. 若最佳模式不是Skip模式，则根据候选模式的SATD-Cost确定 `uiNumMrgSATDCand` 
+#### 1. 遍历常规Merge候选模式
+1. 调用函数 `InterPrediction::motionCompensation` 进行运动补偿获得预测值，并使用DMVR对MV进行细化。
+```c++
+   m_pcInterSearch->motionCompensation(pu, *singleMergeTempBuffer, REF_PIC_LIST_X, true, true, &(acMergeTmpBuffer[uiMergeCand]));
+   pu.mvRefine = false;
+   // 判断是否为双向Merge，进行DMVR
+   if( mergeCtx.interDirNeighbours[uiMergeCand] == 3 && mergeCtx.mrgTypeNeighbours[uiMergeCand] == MRG_TYPE_DEFAULT_N )
+   {
+      mergeCtx.mvFieldNeighbours[2*uiMergeCand].mv   = pu.mv[0];
+      mergeCtx.mvFieldNeighbours[2*uiMergeCand+1].mv = pu.mv[1];
+      {
+         int dx, dy, i, j, num = 0;
+         dy = std::min<int>(pu.lumaSize().height, DMVR_SUBCU_HEIGHT);
+         dx = std::min<int>(pu.lumaSize().width, DMVR_SUBCU_WIDTH);
+         if (PU::checkDMVRCondition(pu))
+         {
+            for (i = 0; i < (pu.lumaSize().height); i += dy)
+            {
+               for (j = 0; j < (pu.lumaSize().width); j += dx)
+               {
+               refinedMvdL0[num][uiMergeCand] = pu.mvdL0SubPu[num];
+               num++;
+               }
+            }
+         }
+      }
+   }
+```
+
+2. 根据预测值的亮度分量计算SAD失真 `uiSad`,并根据 `uiSad` 和比特率 `fracBits` 计算损失 `cost`
+```c++
+   Distortion uiSad = distParam.distFunc(distParam);  // 计算SAD
+   m_CABACEstimator->getCtx() = ctxStart;
+   uint64_t fracBits = m_pcInterSearch->xCalcPuMeBits(pu);  // 计算比特率
+   double cost = (double)uiSad + (double)fracBits * sqrtLambdaForFirstPassIntra;
+```
+
+3. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
+```c++
+   insertPos = -1;  // 当前模式在Merge候选Cost列表中的位置
+   updateCandList(ModeInfo(uiMergeCand, true, false, false), cost, RdModeList, candCostList, uiNumMrgSATDCand, &insertPos);
+   if (insertPos != -1)  // 发生了更新
+   {
+      if (insertPos == RdModeList.size() - 1)
+      {
+         swap(singleMergeTempBuffer, acMergeTempBuffer[insertPos]);
+      }
+      else
+      {
+         for (uint32_t i = uint32_t(RdModeList.size()) - 1; i > insertPos; i--)
+         {
+         swap(acMergeTempBuffer[i - 1], acMergeTempBuffer[i]);  // 将代价小的模式移植列表前面
+         }
+         swap(singleMergeTempBuffer, acMergeTempBuffer[insertPos]);
+      }
+   }
+```
+
+#### 2. 若CIIP模式启用标志`isIntrainterEnabled=True`，则遍历 `RdModeList` 前 `NUM_MRG_SATD_CAND` 个模式
+
+1. 生成帧内帧间联合预测
+```c++
+   if (mergeCnt == 0)
+   {
+      m_pcIntraSearch->initIntraPatternChType(*pu.cu, pu.Y());
+      m_pcIntraSearch->predIntraAng(COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), pu);
+      m_pcIntraSearch->switchBuffer(pu, COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), m_pcIntraSearch->getPredictorPtr2(COMPONENT_Y, intraCnt));
+   }
+   pu.cs->getPredBuf(pu).copyFrom(acMergeTmpBuffer[mergeCand]);
+```
+
+2. 调用函数 `IntraPrediction::geneWeightedPred` 计算CIIP预测像素
+```c++
+   m_pcIntraSearch->geneWeightedPred(COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), pu, m_pcIntraSearch->getPredictorPtr2(COMPONENT_Y, intraCnt));
+```
+
+3. 计算SAD失真 `uiSad` 和损失 `cost`
+4. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
+
+#### 3. 遍历MMVD候选模式
+1. 调用函数 `MergeCtx::setMmvdMergeCandiInfo` 根据初始MV派生扩展MV
+```c++
+   mergeCtx.setMmvdMergeCandiInfo(pu, mmvdMergeCand);
+```
+
+2. 调用函数 `InterPrediction::motionCompensation` 进行运动补偿获得预测值
+3. 计算SAD失真 `uiSad`和损失 `cost`
+4. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
+
+#### 4. 若 `RdModeList[i] > RdModeList[0] * MRG_FAST_RATIO`， 则将 `uiNumMrgSATDCand` 设置为 `i`
+```c++
+   for( uint32_t i = 1; i < uiNumMrgSATDCand; i++ )
+   {
+      if( candCostList[i] > MRG_FAST_RATIO * candCostList[0] )
+      {
+         uiNumMrgSATDCand = i;
+         break;
+      }
+   }
+```
+
+## 两次遍历 `RdModeList` 以确定常规Merge模式和Skip模式，选择最优Merge候选
+### 1. 初始化当前Merge候选的模式
    1. TODO
-2. 调用 `EncCu::xEncodeInterResidual` 函数编码当前Merge候选的预测残差，并完成率失真比较
 
-# 代码
+### 2. 调用 `EncCu::xEncodeInterResidual` 函数编码当前Merge候选的预测残差，并完成率失真比较
+
+# 完整代码
 ```c++
 void EncCu::xCheckRDCostMerge2Nx2N( CodingStructure *&tempCS, CodingStructure *&bestCS, Partitioner &partitioner, const EncTestMode& encTestMode )
 {
