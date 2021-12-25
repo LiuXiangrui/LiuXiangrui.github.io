@@ -121,7 +121,7 @@
 
 
 
-  <title>HEVC术语缩写对照表 | Liu Xiangrui's Blog</title>
+  <title>Liu Xiangrui's Blog</title>
   
 
 
@@ -140,7 +140,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -243,9 +244,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -258,7 +259,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/">
+    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/12/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%AD%E7%9A%84%E5%B8%A7%E7%B1%BB%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -275,7 +276,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HEVC术语缩写对照表</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/12/12/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%AD%E7%9A%84%E5%B8%A7%E7%B1%BB%E5%9E%8B/" itemprop="url">视频编码中的帧类型</a></h1>
         
 
         <div class="post-meta">
@@ -339,7 +342,7 @@
                 
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
-                <span title="字数统计">3k</span>
+                <span title="字数统计">503</span>
               
 
               
@@ -353,7 +356,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">3 mins.</span>
+                <span title="阅读时长">1 mins.</span>
               
             </div>
           
@@ -373,100 +376,15 @@
       
 
       
-        <p>本文整理了在阅读HEVC技术文档和代码过程中遇到的术语缩写    </p>
-<table>
-<thead>
-<tr>
-<th align="center"><center>作用域</center></th>
-<th align="center"><center>缩写</center></th>
-<th align="right"><center>全称</center></th>
-<th align="right"><center>中文名称</center></th>
-<th align="right"><center>简介</center></th>
-<th align="right"><center>详解</center></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">高层语法</td>
-<td align="center">NALU</td>
-<td align="right">Network Abstraction Layer Unit</td>
-<td align="right">网络抽象层单元</td>
-<td align="right"></td>
-<td align="right"></td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center">IRAP</td>
-<td align="right">Intra Random Access Point</td>
-<td align="right">帧内随机接入点</td>
-<td align="right">一种帧内图像，包含IDR，CRA和BLA三种子类型</td>
-<td align="right"><a href="/2021/12/12/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%AD%E7%9A%84%E5%B8%A7%E7%B1%BB%E5%9E%8B/" title="视频编码中的帧类型">视频编码中的帧类型</a></td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center">IDR</td>
-<td align="right">Instantaneous Decoding Refresh</td>
-<td align="right">即时解码刷新</td>
-<td align="right">切断后续图像对IDR前已解码图像的参考</td>
-<td align="right"><a href="/2021/12/12/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%AD%E7%9A%84%E5%B8%A7%E7%B1%BB%E5%9E%8B/" title="视频编码中的帧类型">视频编码中的帧类型</a></td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center">CRA</td>
-<td align="right">Clean Random Access</td>
-<td align="right">纯随机接入</td>
-<td align="right">比特流GOP的第一帧</td>
-<td align="right"><a href="/2021/12/12/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%AD%E7%9A%84%E5%B8%A7%E7%B1%BB%E5%9E%8B/" title="视频编码中的帧类型">视频编码中的帧类型</a></td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center">BLA</td>
-<td align="right">Broken Link Access</td>
-<td align="right">断点连接接入</td>
-<td align="right">用于实现不同视频码流的拼接</td>
-<td align="right"><a href="/2021/12/12/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%AD%E7%9A%84%E5%B8%A7%E7%B1%BB%E5%9E%8B/" title="视频编码中的帧类型">视频编码中的帧类型</a></td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center">TSA</td>
-<td align="right">Temporal Sub-layer Access</td>
-<td align="right">时域子层接入点</td>
-<td align="right">比特流可以由此开始解码更高时域层</td>
-<td align="right">TODO</td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center">STSA</td>
-<td align="right">Step-wise Temporal Sub-layer Access</td>
-<td align="right">逐步时域子层接入点</td>
-<td align="right">TODO</td>
-<td align="right">TODO</td>
-</tr>
-<tr>
-<td align="center">高层语法</td>
-<td align="center"></td>
-<td align="right"></td>
-<td align="right"></td>
-<td align="right"></td>
-<td align="right">TODO</td>
-</tr>
-<tr>
-<td align="center">帧间预测</td>
-<td align="center">AMP</td>
-<td align="right">Asymmetric Motion Partition</td>
-<td align="right">非对称运动分割</td>
-<td align="right">TODO</td>
-<td align="right">TODO</td>
-</tr>
-<tr>
-<td align="center">帧间预测</td>
-<td align="center">AMVP</td>
-<td align="right">Advanced Motion Vector Prediction</td>
-<td align="right">高级运动向量预测技术</td>
-<td align="right">利用空时域相关性预测运动矢量</td>
-<td align="right">TODO</td>
-</tr>
-</tbody></table>
+        
+          
+            <p>IRAP Intra Random Access Point：帧内随机接入点，IRAP图像都属于时域子层0，而且一定是帧内图像，它的编码不需要参考任何其他图像，但帧内图像却不一定是IRAP图像。HEVC的IRAP图像包括：IDR图像、CRA图像和BLA图像。</p>
+<p>IDR Instantaneous Decoding Refresh：即时解码刷新。IDR图像是帧内编码图像，切断了后续图像对此IDR前面已解码图像的联系，在解码顺序中跟随IDR图像后面的图像不能使用先于IDR图像的已解码图像作参考。</p>
+<p>CRA Clean Random Access：纯随机接入，它处于比特流GOP的第一帧，即RAP图像位置，是I帧，和IDR帧一样可被独立解码。CRA图像都是和相应前置图像有关联的图像。 </p>
+<p>BLA Broken Link Access：断点连接接入，主要用于实现对不同视频码流的拼接。只要简单地把后续码流中的一个IRAP（帧内随机接入点）图像的NAL单元类型改变为BLA标记值，串接到前面码流中IRAP帧的位置形成一个新的码流，就可以完成码流拼接的工作。</p>
 
+          
+        
       
     </div>
     
@@ -478,55 +396,17 @@
     
 
     
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者：</strong>
-    Xiangrui Liu
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://liuxiangrui.github.io/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" title="HEVC术语缩写对照表">https://liuxiangrui.github.io/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>
-    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-
-      </div>
-    
 
     <footer class="post-footer">
       
 
       
-      
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2021/12/12/VVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" rel="next" title="VVC术语缩写对照表">
-                <i class="fa fa-chevron-left"></i> VVC术语缩写对照表
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/12/13/MMVD/" rel="prev" title="带有运动矢量差的Merge(MMVD)">
-                带有运动矢量差的Merge(MMVD) <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -536,11 +416,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -548,10 +431,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -831,10 +710,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
-
-
 
   
 
@@ -892,6 +767,26 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 

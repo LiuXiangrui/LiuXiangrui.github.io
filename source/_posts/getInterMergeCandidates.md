@@ -43,7 +43,7 @@ public:
 
     MotionBuf     subPuMvpMiBuf;
     MotionBuf     subPuMvpExtMiBuf;
-    MvField mmvdBaseMv[MMVD_BASE_MV_NUM][2];
+    MvField mmvdBaseMv[MMVD_BASE_MV_NUM][2];  // MMVD初始MV
     void setMmvdMergeCandiInfo(PredictionUnit& pu, int candIdx);
     bool          mmvdUseAltHpelIf  [ MMVD_BASE_MV_NUM ];
     bool          useAltHpelIf      [ MRG_MAX_NUM_CANDS ];
@@ -51,7 +51,7 @@ public:
 };
 ```
 
-- VVC中候选列表长度设置为 `MRG_MAX_NUM_CANDS`，按顺序包括空域候选项（最多4个），时域候选项（最多1个），HMVP候选项（最多填充至列表长度-1），逐对的平均MVP候选项（最多1个），零向量（填充至列表长度）
+- VVC中候选列表长度设置为 `MRG_MAX_NUM_CANDS = 6`，按顺序包括空域候选项（最多4个），时域候选项（最多1个），HMVP候选项（最多填充至列表长度-1），逐对的平均MVP候选项（最多1个），零向量（填充至列表长度）
 - 若中途参考列表被填满，则提前终止
 
 ![Merge-Candidate-List-for-3D-HEVC-The-difference-between-3DHEVC-and-HEVC-lies-in-the.png](https://s2.loli.net/2021/12/19/Hq4Q2OPtygeTMdo.png)

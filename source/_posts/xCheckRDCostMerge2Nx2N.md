@@ -32,7 +32,7 @@ mathjax: false
    PU::getInterMergeCandidates(pu, mergeCtx, 0);
 ```
 
-### 2. 调用 `PU::getInterMMVDMergeCandidates` 函数获取MMVD模式候选列表
+### 2. 调用 `PU::getInterMMVDMergeCandidates` 函数{% post_link 'MMVD' '建立MMVD模式候选列表'%}
 
 ```c++
    PU::getInterMMVDMergeCandidates(pu, mergeCtx);
@@ -176,7 +176,7 @@ struct ModeInfo
    }
 ```
 
-#### 2. 若CIIP模式启用标志`isIntrainterEnabled=True`，则遍历 `RdModeList` 前 `NUM_MRG_SATD_CAND` 个模式
+#### 2. 若CIIP模式启用标志`isIntrainterEnabled=True`，则遍历 `RdModeList` 前 `NUM_MRG_SATD_CAND=4` 个模式
 
 1. 生成帧内帧间联合预测
 
@@ -212,8 +212,8 @@ struct ModeInfo
    m_pcInterSearch->motionCompensation(pu, *singleMergeTempBuffer, REF_PIC_LIST_X, true, false);
 ```
 
-1. 计算SAD失真 `uiSad`和损失 `cost`
-2. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
+3. 计算SAD失真 `uiSad`和损失 `cost`
+4. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
 
 #### 4. 若 `RdModeList[i] > RdModeList[0] * MRG_FAST_RATIO`， 则将 `uiNumMrgSATDCand` 设置为 `i`
 
