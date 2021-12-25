@@ -26,8 +26,6 @@ mathjax: true
 
 # 流程
 
-![Merge-Candidate-List-for-3D-HEVC-The-difference-between-3DHEVC-and-HEVC-lies-in-the.png](https://s2.loli.net/2021/12/19/Hq4Q2OPtygeTMdo.png)
-
 ## Merge模式上下文
 
 ```c++
@@ -55,6 +53,8 @@ public:
 
 - VVC中候选列表长度设置为 `MRG_MAX_NUM_CANDS`，按顺序包括空域候选项（最多4个），时域候选项（最多1个），HMVP候选项（最多填充至列表长度-1），逐对的平均MVP候选项（最多1个），零向量（填充至列表长度）
 - 若中途参考列表被填满，则提前终止
+
+![Merge-Candidate-List-for-3D-HEVC-The-difference-between-3DHEVC-and-HEVC-lies-in-the.png](https://s2.loli.net/2021/12/19/Hq4Q2OPtygeTMdo.png)
 
 ## 基于相邻块的空域MVP
 - 按照$B_1\rightarrow A_1\rightarrow B_0\rightarrow A_0\rightarrow (B_2)$选取**最多4个MV作为空域候选MVP**
@@ -133,7 +133,7 @@ $$
 ```c++
    if (slice.getPicHeader()->getEnableTMVPFlag() && (pu.lumaSize().width + pu.lumaSize().height > 12))  // 当启用时域MVP且PU尺寸大于等于8x8
    {
-      bool      bExistMV    = ( C0Avail && getColocatedMVP(pu, REF_PIC_LIST_0, posC0, cColMv, iRefIdx, false ) )
+      bool bExistMV = ( C0Avail && getColocatedMVP(pu, REF_PIC_LIST_0, posC0, cColMv, iRefIdx, false ) )
                               || getColocatedMVP( pu, REF_PIC_LIST_0, posC1, cColMv, iRefIdx, false );
       if (bExistMV)
       {
