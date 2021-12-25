@@ -145,7 +145,7 @@ $$
 ## 基于历史信息的MVP(HMVP)
 - 历史候选来源于同一CTU中已帧间编码CU的运动信息
 - 若候选列表长度小于 `maxNumMergeCand-1`，查询HMVP候选
-- 调用函数 `PU::addMergeHMVPCand` 获得HMVP候选
+- 调用函数 `PU::addMergeHMVPCand` {% post_link 'addMergeHMVPCand' '获得HMVP候选'%}
 - CTU维护一个基于FIFO的查找表LUT，用于记录帧间编码的CU的运动信息。若新增项与已有项运动信息相同，则弹出已有项
 - 在使用HMVP候选项构建Merge候选列表时，从后向前查询LUT中HMVP候选，并在冗余性检查通过后加入Merge候选列表
 - 当候选列表长度等于 `maxNumMergeCand-1` 时，结束查询HMVP候选
