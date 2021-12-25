@@ -144,10 +144,7 @@ $$
 
 ## 基于历史信息的MVP(HMVP)
 - 历史候选来源于同一CTU中已帧间编码CU的运动信息
-- 若候选列表长度小于 `maxNumMergeCand-1`，查询HMVP候选
 - 调用函数 `PU::addMergeHMVPCand` {% post_link 'addMergeHMVPCand' '获得HMVP候选'%}
-- CTU维护一个基于FIFO的查找表LUT，用于记录帧间编码的CU的运动信息。若新增项与已有项运动信息相同，则弹出已有项
-- 在使用HMVP候选项构建Merge候选列表时，从后向前查询LUT中HMVP候选，并在冗余性检查通过后加入Merge候选列表
 - 当候选列表长度等于 `maxNumMergeCand-1` 时，结束查询HMVP候选
 
 ## 逐对的平均MVP
@@ -165,6 +162,7 @@ $$
          const Mv& MvJ = mrgCtx.mvFieldNeighbours[1 * 2 + refListId].mv;
          Mv avgMv = MvI;
          avgMv += MvJ;
+         roundAffineMv(avgMv.hor, avgMv.ver, 1);  // 通过移位实现平均
          mrgCtx.mvFieldNeighbours[cnt * 2 + refListId].setMvField( avgMv, refIdxI );
       }
       // ...其他情况
@@ -814,96 +812,3 @@ void PU::getInterMergeCandidates( const PredictionUnit &pu, MergeCtx& mrgCtx,
 }
 ```
 
-### addMergeHMVPCand
-```c++
-// 添加HMVP候选
-bool PU::addMergeHMVPCand(const CodingStructure &cs, MergeCtx &mrgCtx, const int &mrgCandIdx,
-                          const uint32_t maxNumMergeCandMin1, int &cnt, const bool isAvailableA1,
-                          const MotionInfo miLeft, const bool isAvailableB1, const MotionInfo miAbove,
-                          const bool ibcFlag, const bool isGt4x4
-#if GDR_ENABLED
-                         ,const PredictionUnit &pu
-                         ,bool &allCandSolidInAbove
-#endif
-)
-{
-  const Slice& slice = *cs.slice;
-  MotionInfo miNeighbor;
-
-  auto &lut = ibcFlag ? cs.motionLut.lutIbc : cs.motionLut.lut;  // 历史CU运动信息查找表
-  int num_avai_candInLUT = (int)lut.size();
-
-#if GDR_ENABLED
-  const bool isEncodeGdrClean = cs.sps->getGDREnabledFlag() && cs.pcv->isEncoder && ((cs.picHeader->getInGdrInterval() && cs.isClean(pu.Y().topRight(), CHANNEL_TYPE_LUMA)) || (cs.picHeader->getNumVerVirtualBoundaries() == 0));
-
-  bool  vbOnCtuBoundary = true;
-  if (isEncodeGdrClean)
-  {
-    vbOnCtuBoundary = (pu.cs->picHeader->getNumVerVirtualBoundaries() == 0) || (pu.cs->picHeader->getVirtualBoundariesPosX(0) % pu.cs->sps->getMaxCUWidth() == 0);
-    allCandSolidInAbove = allCandSolidInAbove && vbOnCtuBoundary;
-  }
-#endif
-  for (int mrgIdx = 1; mrgIdx <= num_avai_candInLUT; mrgIdx++)
-  {
-    miNeighbor = lut[num_avai_candInLUT - mrgIdx];  // 从后向前查询LUT
-#if GDR_ENABLED
-    Position sourcePos = Position(0, 0);
-    if (isEncodeGdrClean)
-    {
-      sourcePos = miNeighbor.sourcePos;
-    }
-#endif
-
-    if ( mrgIdx > 2 || ((mrgIdx > 1 || !isGt4x4) && ibcFlag)  // Merge候选列表冗余性检查
-      || ((!isAvailableA1 || (miLeft != miNeighbor)) && (!isAvailableB1 || (miAbove != miNeighbor))) )
-    {
-      mrgCtx.interDirNeighbours[cnt] = miNeighbor.interDir;  // 向Merge候选列表加入HMVP
-      mrgCtx.useAltHpelIf      [cnt] = !ibcFlag && miNeighbor.useAltHpelIf;
-      mrgCtx.BcwIdx            [cnt] = (miNeighbor.interDir == 3) ? miNeighbor.BcwIdx : BCW_DEFAULT;
-
-      mrgCtx.mvFieldNeighbours[cnt << 1].setMvField(miNeighbor.mv[0], miNeighbor.refIdx[0]);
-#if GDR_ENABLED
-      if (isEncodeGdrClean)
-      {
-        // note : cannot gaurantee the order/value in the lut if any of the lut is in dirty area
-        mrgCtx.mvPos[(cnt << 1) + 0]   = sourcePos;
-        mrgCtx.mvSolid[(cnt << 1) + 0] = allCandSolidInAbove && vbOnCtuBoundary;
-        mrgCtx.mvValid[(cnt << 1) + 0] = cs.isClean(pu.Y().bottomRight(), miNeighbor.mv[0], REF_PIC_LIST_0, miNeighbor.refIdx[0]);
-        allCandSolidInAbove = allCandSolidInAbove && vbOnCtuBoundary;
-      }
-#endif
-      if (slice.isInterB())  // B帧
-      {
-        mrgCtx.mvFieldNeighbours[(cnt << 1) + 1].setMvField(miNeighbor.mv[1], miNeighbor.refIdx[1]);
-#if GDR_ENABLED
-        if (isEncodeGdrClean)
-        {
-          mrgCtx.mvPos[(cnt << 1) + 1]   = sourcePos;
-          mrgCtx.mvSolid[(cnt << 1) + 1] = allCandSolidInAbove && vbOnCtuBoundary;
-          mrgCtx.mvValid[(cnt << 1) + 1] = cs.isClean(pu.Y().bottomRight(), miNeighbor.mv[1], REF_PIC_LIST_1, miNeighbor.refIdx[1]);
-          allCandSolidInAbove = allCandSolidInAbove && vbOnCtuBoundary;
-        }
-#endif
-      }
-
-      if (mrgCandIdx == cnt)
-      {
-        return true;
-      }
-      cnt ++;
-
-      if (cnt  == maxNumMergeCandMin1)  // 当Merge列表长度为最大长度-1时，停止HMVP
-      {
-        break;
-      }
-    }
-  }
-
-  if (cnt < maxNumMergeCandMin1)
-  {
-    mrgCtx.useAltHpelIf[cnt] = false;
-  }
-
-  return false;
-}
-```

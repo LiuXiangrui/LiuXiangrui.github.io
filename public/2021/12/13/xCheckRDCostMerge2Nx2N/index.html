@@ -381,7 +381,7 @@
 <li><code>Partitioner &amp;partitioner</code></li>
 <li><code>const EncTestMode&amp; encTestMode</code></li>
 </ul>
-<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><p><code>xCheckRDCostMerge2Nx2N</code> 函数根据SATD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，带有运动矢量差的Merge模式(MMVD)以及帧内帧间联合预测模式(CIIP)</p>
+<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><p><code>xCheckRDCostMerge2Nx2N</code> 函数根据RD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，带有运动矢量差的Merge模式(MMVD)以及帧内帧间联合预测模式(CIIP)</p>
 <h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><h2 id="获取Merge模式候选列表"><a href="#获取Merge模式候选列表" class="headerlink" title="获取Merge模式候选列表"></a>获取Merge模式候选列表</h2><h3 id="1-调用-PU-getInterMergeCandidates-函数"><a href="#1-调用-PU-getInterMergeCandidates-函数" class="headerlink" title="1. 调用 PU::getInterMergeCandidates 函数"></a>1. 调用 <code>PU::getInterMergeCandidates</code> 函数<a href="/2021/12/13/getInterMergeCandidates/" title="建立常规Merge模式候选列表">建立常规Merge模式候选列表</a></h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PU::<span class="built_in">getInterMergeCandidates</span>(pu, mergeCtx, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-调用-PU-getInterMMVDMergeCandidates-函数获取MMVD模式候选列表"><a href="#2-调用-PU-getInterMMVDMergeCandidates-函数获取MMVD模式候选列表" class="headerlink" title="2. 调用 PU::getInterMMVDMergeCandidates 函数获取MMVD模式候选列表"></a>2. 调用 <code>PU::getInterMMVDMergeCandidates</code> 函数获取MMVD模式候选列表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PU::<span class="built_in">getInterMMVDMergeCandidates</span>(pu, mergeCtx);</span><br></pre></td></tr></table></figure>
@@ -499,8 +499,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" rel="next" title="HEVC术语缩写对照表">
-                <i class="fa fa-chevron-left"></i> HEVC术语缩写对照表
+              <a href="/2021/12/13/addMergeHMVPCand/" rel="next" title="VTM代码阅读：PU::addMergeHMVPCand">
+                <i class="fa fa-chevron-left"></i> VTM代码阅读：PU::addMergeHMVPCand
               </a>
             
           </div>
@@ -592,7 +592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

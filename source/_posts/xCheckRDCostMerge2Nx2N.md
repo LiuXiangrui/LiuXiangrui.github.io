@@ -22,7 +22,7 @@ mathjax: false
 - `const EncTestMode& encTestMode`
 
 # 功能
-`xCheckRDCostMerge2Nx2N` 函数根据SATD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，带有运动矢量差的Merge模式(MMVD)以及帧内帧间联合预测模式(CIIP)
+`xCheckRDCostMerge2Nx2N` 函数根据RD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，带有运动矢量差的Merge模式(MMVD)以及帧内帧间联合预测模式(CIIP)
 
 # 流程
 ## 获取Merge模式候选列表
