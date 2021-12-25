@@ -9,11 +9,10 @@ mathjax: true
 ---
 
 # 原理
-MMVD通过使用固定的模板细化常规Merge模式的MV提高Merge模式的预测精度
+## MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度
 
-- 编码端在发送了Skip Flag和Merge Flag之后，额外发送MMVD Flag以指示当前CU是否使用MMVD预测模式
 - MMVD在常规Merge候选列表选取 `MMVD_BASE_MV_NUM=2` 个初始MV进行细化，获得 `MMVD_BASE_MV_NUM * MMVD_REFINE_STEP*4=64` 个细化MV
-- MMVD使用初始MV的索引，细化搜索步长，细化搜索方向三个语法元素表示细化后的MV
+- MMVD使用初始MV的索引，细化搜索步长索引，细化搜索方向索引三个语法元素表示细化后的MV
 
 ## MMVD定义了 `MMVD_REFINE_STEP=8` 种搜索步长
 | 偏移量索引 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |

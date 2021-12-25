@@ -1563,11 +1563,9 @@
       
         
           
-            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>MMVD通过使用固定的模板细化常规Merge模式的MV提高Merge模式的预测精度</p>
-<ul>
-<li>编码端在发送了Skip Flag和Merge Flag之后，额外发送MMVD Flag以指示当前CU是否使用MMVD预测模式</li>
+            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度"><a href="#MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度" class="headerlink" title="MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度"></a>MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度</h2><ul>
 <li>MMVD在常规Merge候选列表选取 <code>MMVD_BASE_MV_NUM=2</code> 个初始MV进行细化，获得 <code>MMVD_BASE_MV_NUM * MMVD_REFINE_STEP*4=64</code> 个细化MV</li>
-<li>MMVD使用初始MV的索引，细化搜索步长，细化搜索方向三个语法元素表示细化后的MV</li>
+<li>MMVD使用初始MV的索引，细化搜索步长索引，细化搜索方向索引三个语法元素表示细化后的MV</li>
 </ul>
 <h2 id="MMVD定义了-MMVD-REFINE-STEP-8-种搜索步长"><a href="#MMVD定义了-MMVD-REFINE-STEP-8-种搜索步长" class="headerlink" title="MMVD定义了 MMVD_REFINE_STEP=8 种搜索步长"></a>MMVD定义了 <code>MMVD_REFINE_STEP=8</code> 种搜索步长</h2><table>
 <thead>
