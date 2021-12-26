@@ -22,7 +22,7 @@ mathjax: false
 - `const EncTestMode& encTestMode`
 
 # 功能
-`xCheckRDCostMerge2Nx2N` 函数根据RD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，带有运动矢量差的Merge模式(MMVD)以及帧内帧间联合预测模式(CIIP)
+`xCheckRDCostMerge2Nx2N` 函数根据RD-Cost选择Merge/Skip模式的最佳候选MVP，所涉及的帧间预测模式包括常规Merge模式(Regular Merge)，帧内帧间联合预测模式(CIIP)以及带有运动矢量差的Merge模式(MMVD)
 
 # 流程
 ## 获取Merge模式候选列表
@@ -176,28 +176,16 @@ struct ModeInfo
    }
 ```
 
-#### 2. 若CIIP模式启用标志`isIntrainterEnabled=True`，则遍历 `RdModeList` 前 `NUM_MRG_SATD_CAND=4` 个模式
+#### 2. 若CIIP模式标志`isIntrainterEnabled=True`，则由 `RdModeList` 前 `NUM_MRG_SATD_CAND=4` 个候选生成CIIP候选
 
-1. 生成帧内帧间联合预测
-
-```c++
-   if (mergeCnt == 0)
-   {
-      m_pcIntraSearch->initIntraPatternChType(*pu.cu, pu.Y());
-      m_pcIntraSearch->predIntraAng(COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), pu);
-      m_pcIntraSearch->switchBuffer(pu, COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), m_pcIntraSearch->getPredictorPtr2(COMPONENT_Y, intraCnt));
-   }
-   pu.cs->getPredBuf(pu).copyFrom(acMergeTmpBuffer[mergeCand]);
-```
-
-2. 调用函数 `IntraPrediction::geneWeightedPred` 计算CIIP预测像素
+1. 调用函数 `IntraPrediction::geneWeightedPred` {% post_link 'CIIP' '计算CIIP预测像素'%}
 
 ```c++
    m_pcIntraSearch->geneWeightedPred(COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), pu, m_pcIntraSearch->getPredictorPtr2(COMPONENT_Y, intraCnt));
 ```
 
-3. 计算SAD失真 `uiSad` 和损失 `cost`
-4. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
+2. 计算SAD失真 `uiSad` 和损失 `cost`
+3. 调用函数 `TU::updateCandList` 更新 `RdModeList`，将代价小的模式移植列表前面
 
 #### 3. 遍历MMVD候选模式
 1. 调用函数 `MergeCtx::setMmvdMergeCandiInfo` 根据初始MV派生扩展MV
@@ -531,7 +519,7 @@ void EncCu::xCheckRDCostMerge2Nx2N( CodingStructure *&tempCS, CodingStructure *&
           pu.intraDir[0] = PLANAR_IDX;  // 帧内用Planar模式
           uint32_t intraCnt = 0;
           // generate intrainter Y prediction  产生帧内帧间联合预测像素
-          if (mergeCnt == 0)
+          if (mergeCnt == 0)  // 帧内只需计算一次
           {
             m_pcIntraSearch->initIntraPatternChType(*pu.cu, pu.Y());
             m_pcIntraSearch->predIntraAng(COMPONENT_Y, pu.cs->getPredBuf(pu).Y(), pu);

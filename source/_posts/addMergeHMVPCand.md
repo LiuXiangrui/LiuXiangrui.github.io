@@ -74,8 +74,15 @@ void CodingStructure::addMiToLut(static_vector<MotionInfo, MAX_NUM_HMVP_CANDS> &
 }
 ```
 
-### 从后向前查询LUT，并在冗余性检查通过后加入Merge候选列表
+### 从后向前查询LUT，并在冗余性检查通过后加入Merge候选列表，当候选列表长度等于 `maxNumMergeCand-1` 时，结束查询HMVP候选
 ```c++
+bool PU::addMergeHMVPCand(const CodingStructure &cs, MergeCtx &mrgCtx, const int &mrgCandIdx,
+                          const uint32_t maxNumMergeCandMin1, int &cnt, const bool isAvailableA1,
+                          const MotionInfo miLeft, const bool isAvailableB1, const MotionInfo miAbove,
+                          const bool ibcFlag, const bool isGt4x4
+)
+{
+   // ...
    for (int mrgIdx = 1; mrgIdx <= num_avai_candInLUT; mrgIdx++)
    {
       miNeighbor = lut[num_avai_candInLUT - mrgIdx];  // 从后向前查询LUT
@@ -83,16 +90,15 @@ void CodingStructure::addMiToLut(static_vector<MotionInfo, MAX_NUM_HMVP_CANDS> &
       || ((!isAvailableA1 || (miLeft != miNeighbor)) && (!isAvailableB1 || (miAbove != miNeighbor))) )
       {
         //... 加入Merge候选列表
+        
+        cnt ++;
+        if (cnt  == maxNumMergeCandMin1)  // 当Merge列表长度为最大长度-1时，停止HMVP
+        {
+            break;
+        }
       }
    }
-```
-
-### 当候选列表长度等于 `maxNumMergeCand-1` 时，结束查询HMVP候选
-```c++
-   if (cnt  == maxNumMergeCandMin1)
-   {
-      break;
-   }
+}
 ```
 
 # 代码

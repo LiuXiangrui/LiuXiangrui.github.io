@@ -4,14 +4,15 @@ date: 2021-12-13 00:30:25
 tags: 
 - 帧间预测
 - VVC
+- 代码阅读
 categories: 视频编码
-mathjax: true
+mathjax: false
 ---
 
 # 原理
 ## MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度
 
-- MMVD在常规Merge候选列表选取 `MMVD_BASE_MV_NUM=2` 个初始MV进行细化，获得 `MMVD_BASE_MV_NUM * MMVD_REFINE_STEP*4=64` 个细化MV
+- MMVD在常规Merge候选列表选取 `MMVD_BASE_MV_NUM=2` 个初始MV，使用固定的搜索步长和搜索方向进行细化，获得 `MMVD_BASE_MV_NUM * MMVD_REFINE_STEP*4=64` 个MMVD候选
 - MMVD使用初始MV的索引，细化搜索步长索引，细化搜索方向索引三个语法元素表示细化后的MV
 
 ## MMVD定义了 `MMVD_REFINE_STEP=8` 种搜索步长

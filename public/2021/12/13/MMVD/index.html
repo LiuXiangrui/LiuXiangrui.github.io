@@ -374,7 +374,7 @@
 
       
         <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度"><a href="#MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度" class="headerlink" title="MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度"></a>MMVD对常规Merge模式的MV进行细化以提高Merge模式的预测精度</h2><ul>
-<li>MMVD在常规Merge候选列表选取 <code>MMVD_BASE_MV_NUM=2</code> 个初始MV进行细化，获得 <code>MMVD_BASE_MV_NUM * MMVD_REFINE_STEP*4=64</code> 个细化MV</li>
+<li>MMVD在常规Merge候选列表选取 <code>MMVD_BASE_MV_NUM=2</code> 个初始MV，使用固定的搜索步长和搜索方向进行细化，获得 <code>MMVD_BASE_MV_NUM * MMVD_REFINE_STEP*4=64</code> 个MMVD候选</li>
 <li>MMVD使用初始MV的索引，细化搜索步长索引，细化搜索方向索引三个语法元素表示细化后的MV</li>
 </ul>
 <h2 id="MMVD定义了-MMVD-REFINE-STEP-8-种搜索步长"><a href="#MMVD定义了-MMVD-REFINE-STEP-8-种搜索步长" class="headerlink" title="MMVD定义了 MMVD_REFINE_STEP=8 种搜索步长"></a>MMVD定义了 <code>MMVD_REFINE_STEP=8</code> 种搜索步长</h2><table>
@@ -505,8 +505,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/12/12/HEVC%E6%9C%AF%E8%AF%AD%E7%BC%A9%E5%86%99%E5%AF%B9%E7%85%A7%E8%A1%A8/" rel="next" title="HEVC术语缩写对照表">
-                <i class="fa fa-chevron-left"></i> HEVC术语缩写对照表
+              <a href="/2021/12/13/CIIP/" rel="next" title="帧内帧间联合预测(CIIP))">
+                <i class="fa fa-chevron-left"></i> 帧内帧间联合预测(CIIP))
               </a>
             
           </div>
@@ -690,10 +690,6 @@
             
             
               <li class="recent_posts_li">
-                <a href="/2021/12/25/hello-world/" title="Hello World" target="_blank">Hello World</a>
-              </li>
-            
-              <li class="recent_posts_li">
                 <a href="/2021/12/13/AMVP/" title="高级运动矢量预测(AMVP)" target="_blank">高级运动矢量预测(AMVP)</a>
               </li>
             
@@ -707,6 +703,10 @@
             
               <li class="recent_posts_li">
                 <a href="/2021/12/13/xCheckRDCostMerge2Nx2N/" title="VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N" target="_blank">VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/addMergeHMVPCand/" title="VTM代码阅读：PU::addMergeHMVPCand" target="_blank">VTM代码阅读：PU::addMergeHMVPCand</a>
               </li>
             
           </ul>
@@ -734,7 +734,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">79k</span>
+    <span title="站点总字数">82k</span>
   
 
   
@@ -743,7 +743,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点总阅读次数">1:19</span>
+    <span title="站点总阅读次数">1:22</span>
   
 </div>
 
@@ -914,26 +914,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 

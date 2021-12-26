@@ -147,6 +147,19 @@ $$
 - 调用函数 `PU::addMergeHMVPCand` {% post_link 'addMergeHMVPCand' '获得HMVP候选'%}
 - 当候选列表长度等于 `maxNumMergeCand-1` 时，结束查询HMVP候选
 
+```c++
+if (cnt != maxNumMergeCandMin1)  // 检查Merge列表是否到达最大数目减1，如果到达则不需要进行HMVP候选
+  {
+    bool isGt4x4 = true;
+    bool bFound  = addMergeHMVPCand(cs, mrgCtx, mrgCandIdx, maxNumMergeCandMin1, cnt, isAvailableA1, miLeft,
+                                   isAvailableB1, miAbove, CU::isIBC(*pu.cu), isGt4x4); 
+    if (bFound)  // Merge参考列表满
+    {
+      return;  
+    }
+  }
+```
+
 ## 逐对的平均MVP
 
 ### 根据Merge候选列表前两项 `p0Cand` 和 `p1Cand` 计算平均MV
