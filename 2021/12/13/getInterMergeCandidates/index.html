@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="about">
+<meta property="og:url" content="https://liuxiangrui.github.io/about/index.html">
+<meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-31T02:05:56.000Z">
+<meta property="article:modified_time" content="2021-12-24T16:35:50.511Z">
+<meta property="article:author" content="Xiangrui Liu">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liuxiangrui.github.io/about/"/>
+
+
+
+
+
+  <title>VTM代码阅读：PU::getInterMergeCandidates | Liu Xiangrui's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Liu Xiangrui's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/13/getInterMergeCandidates/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Liu Xiangrui's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">VTM代码阅读：PU::getInterMergeCandidates</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-13T00:30:25+08:00">2021-12-13</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">视频编码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">109k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1:49</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PU::getInterMergeCandidates</span><span class="params">( <span class="keyword">const</span> PredictionUnit &amp;pu, MergeCtx&amp; mrgCtx, <span class="keyword">int</span> mmvdList, <span class="keyword">const</span> <span class="keyword">int</span>&amp; mrgCandIdx )</span></span></span><br></pre></td></tr></table></figure>
+
+<h1 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h1><ul>
+<li><code>const PredictionUnit &amp;pu</code></li>
+<li><code>MergeCtx&amp; mrgCtx</code></li>
+<li><code>int mmvdList</code></li>
+<li><code>const int&amp; mrgCandIdx</code></li>
+</ul>
+<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><p><code>getInterMergeCandidates</code> 函数用于建立Merge候选列表，其候选MVP来自于基于相邻块的空域MVP，基于同位块的时域MVP，基于历史信息的MVP(HMVP)，逐对的平均MVP和零运动矢量</p>
+<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><h2 id="Merge模式上下文"><a href="#Merge模式上下文" class="headerlink" title="Merge模式上下文"></a>Merge模式上下文</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MergeCtx</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//  ...构造函数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    MvField       mvFieldNeighbours [ MRG_MAX_NUM_CANDS &lt;&lt; <span class="number">1</span> ];  <span class="comment">// 候选MVP列表</span></span><br><span class="line">    <span class="keyword">uint8_t</span>       BcwIdx            [ MRG_MAX_NUM_CANDS      ];  <span class="comment">// BCW索引</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> interDirNeighbours[ MRG_MAX_NUM_CANDS      ];  <span class="comment">// 候选MVP参考方向(前向，后向，双向)</span></span><br><span class="line">    MergeType     mrgTypeNeighbours [ MRG_MAX_NUM_CANDS      ];  <span class="comment">// 候选MVP类型</span></span><br><span class="line">    <span class="keyword">int</span>           numValidMergeCand;  <span class="comment">// 有效候选数量</span></span><br><span class="line">    <span class="keyword">bool</span>          hasMergedCandList;  <span class="comment">// 是否存在Merge候选列表</span></span><br><span class="line"></span><br><span class="line">    MotionBuf     subPuMvpMiBuf;</span><br><span class="line">    MotionBuf     subPuMvpExtMiBuf;</span><br><span class="line">    MvField mmvdBaseMv[MMVD_BASE_MV_NUM][<span class="number">2</span>];  <span class="comment">// MMVD初始MV</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setMmvdMergeCandiInfo</span><span class="params">(PredictionUnit&amp; pu, <span class="keyword">int</span> candIdx)</span></span>;</span><br><span class="line">    <span class="keyword">bool</span>          mmvdUseAltHpelIf  [ MMVD_BASE_MV_NUM ];</span><br><span class="line">    <span class="keyword">bool</span>          useAltHpelIf      [ MRG_MAX_NUM_CANDS ];</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setMergeInfo</span><span class="params">( PredictionUnit&amp; pu, <span class="keyword">int</span> candIdx )</span></span>;  <span class="comment">// 设置PU的Merge候选</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>VVC中候选列表长度设置为 <code>MRG_MAX_NUM_CANDS = 6</code>，按顺序包括空域候选项（最多4个），时域候选项（最多1个），HMVP候选项（最多填充至列表长度-1），逐对的平均MVP候选项（最多1个），零向量（填充至列表长度）</li>
+<li>若中途参考列表被填满，则提前终止</li>
+</ul>
+<p><img src="https://s2.loli.net/2021/12/19/Hq4Q2OPtygeTMdo.png" alt="Merge-Candidate-List-for-3D-HEVC-The-difference-between-3DHEVC-and-HEVC-lies-in-the.png"></p>
+<h2 id="基于相邻块的空域MVP"><a href="#基于相邻块的空域MVP" class="headerlink" title="基于相邻块的空域MVP"></a>基于相邻块的空域MVP</h2><ul>
+<li>按照$B_1\rightarrow A_1\rightarrow B_0\rightarrow A_0\rightarrow (B_2)$选取<strong>最多4个MV作为空域候选MVP</strong></li>
+<li>当且仅当空域候选列表长度不足4时，将$B_2$作为替补加入空域候选列表</li>
+<li>当候选列表加入$B_1$后，新加入的候选MVP需要进行冗余性检查</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">MotionInfo miAbove, miLeft, miAboveLeft, miAboveRight, miBelowLeft;  <span class="comment">// B1, A1, B2, B1, B0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// B1</span></span><br><span class="line"><span class="keyword">const</span> PredictionUnit *puAbove = cs.<span class="built_in">getPURestricted</span>(posRT.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>), pu, pu.chType);    </span><br><span class="line"><span class="keyword">bool</span> isAvailableB1 = puAbove &amp;&amp; <span class="built_in">isDiffMER</span>(pu.<span class="built_in">lumaPos</span>(), posRT.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>), plevel) &amp;&amp; pu.cu != puAbove-&gt;cu &amp;&amp; CU::<span class="built_in">isInter</span>(*puAbove-&gt;cu);</span><br><span class="line"><span class="keyword">if</span> (isAvailableB1)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// ... 将B1信息加入 mrgCtx</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A1</span></span><br><span class="line"><span class="keyword">const</span> PredictionUnit* puLeft = cs.<span class="built_in">getPURestricted</span>(posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>), pu, pu.chType); </span><br><span class="line"><span class="keyword">const</span> <span class="keyword">bool</span> isAvailableA1 = puLeft &amp;&amp; <span class="built_in">isDiffMER</span>(pu.<span class="built_in">lumaPos</span>(), posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>), plevel) &amp;&amp; pu.cu != puLeft-&gt;cu &amp;&amp; CU::<span class="built_in">isInter</span>(*puLeft-&gt;cu);</span><br><span class="line"><span class="keyword">if</span> (isAvailableA1)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (!isAvailableB1 || (miAbove != miLeft))  <span class="comment">// 检查A1是否与B1相同</span></span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">// ... 将A1信息加入 mrgCtx</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// B0</span></span><br><span class="line"><span class="keyword">const</span> PredictionUnit *puAboveRight = cs.<span class="built_in">getPURestricted</span>( posRT.<span class="built_in">offset</span>( <span class="number">1</span>, <span class="number">-1</span> ), pu, pu.chType );  <span class="comment">// 右上侧PU，即B0</span></span><br><span class="line"><span class="keyword">bool</span> isAvailableB0 = puAboveRight &amp;&amp; <span class="built_in">isDiffMER</span>( pu.<span class="built_in">lumaPos</span>(), posRT.<span class="built_in">offset</span>(<span class="number">1</span>, <span class="number">-1</span>), plevel) &amp;&amp; CU::<span class="built_in">isInter</span>( *puAboveRight-&gt;cu );</span><br><span class="line"><span class="keyword">if</span>( isAvailableB0 )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>( !isAvailableB1 || ( miAbove != miAboveRight ) )  <span class="comment">//检查B0是否与B1相同</span></span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">// ... 将B0信息加入 mrgCtx</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// A0</span></span><br><span class="line"><span class="keyword">const</span> PredictionUnit *puLeftBottom = cs.<span class="built_in">getPURestricted</span>( posLB.<span class="built_in">offset</span>( <span class="number">-1</span>, <span class="number">1</span> ), pu, pu.chType );  <span class="comment">// 左下侧PU，即A0</span></span><br><span class="line"><span class="keyword">bool</span> isAvailableA0 = puLeftBottom &amp;&amp; <span class="built_in">isDiffMER</span>( pu.<span class="built_in">lumaPos</span>(), posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">1</span>), plevel) &amp;&amp; CU::<span class="built_in">isInter</span>( *puLeftBottom-&gt;cu );</span><br><span class="line"><span class="keyword">if</span>( isAvailableA0 )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>( !isAvailableA1 || ( miBelowLeft != miLeft ) )  <span class="comment">// 检查A0是否与A1相同</span></span><br><span class="line">  &#123;</span><br><span class="line">  <span class="comment">// ... 将A0信息加入 mrgCtx</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// B2</span></span><br><span class="line"><span class="keyword">if</span> ( cnt &lt; <span class="number">4</span> )  <span class="comment">// 判断候选列表未满，则查询B2</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">const</span> PredictionUnit *puAboveLeft = cs.<span class="built_in">getPURestricted</span>( posLT.<span class="built_in">offset</span>( <span class="number">-1</span>, <span class="number">-1</span> ), pu, pu.chType );</span><br><span class="line">  <span class="keyword">bool</span> isAvailableB2 = puAboveLeft &amp;&amp; <span class="built_in">isDiffMER</span>( pu.<span class="built_in">lumaPos</span>(), posLT.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">-1</span>), plevel ) &amp;&amp; CU::<span class="built_in">isInter</span>( *puAboveLeft-&gt;cu );</span><br><span class="line">  <span class="keyword">if</span>( isAvailableB2 ) </span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span>( ( !isAvailableA1 || ( miLeft != miAboveLeft ) ) &amp;&amp; ( !isAvailableB1 || ( miAbove != miAboveLeft ) ) )  <span class="comment">// 检查B2是否与B1和A1相同</span></span><br><span class="line">    &#123;</span><br><span class="line">  <span class="comment">// ... 将B2信息加入 mrgCtx   </span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于同位块的时域MVP-TMVP"><a href="#基于同位块的时域MVP-TMVP" class="headerlink" title="基于同位块的时域MVP(TMVP)"></a>基于同位块的时域MVP(TMVP)</h2><ul>
+<li>当启用TMVP且PU尺寸大于等于8x8时，查询TMVP候选</li>
+<li><strong>时域候选列表长度为1</strong>，由相邻已编码帧中同位PU的MV按照$RB \rightarrow  \text{ColCenter}$的顺序缩放填充</li>
+<li>调用函数 <code>PU::getColocatedMVP</code> 根据当前帧到其参考帧的距离$\Delta POC_{cur}$与同位帧到其参考帧的距离$\Delta POC_{col}$的比例对同位PU的MV进行缩放，即<br>$$<br>MV_{cur} = \frac{\Delta POC_{cur}}{\Delta POC_{col}} *MV_{col}<br>$$</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">if</span> (slice.<span class="built_in">getPicHeader</span>()-&gt;<span class="built_in">getEnableTMVPFlag</span>() &amp;&amp; (pu.<span class="built_in">lumaSize</span>().width + pu.<span class="built_in">lumaSize</span>().height &gt; <span class="number">12</span>))  <span class="comment">// 当启用时域MVP且PU尺寸大于等于8x8</span></span><br><span class="line"> &#123;</span><br><span class="line">    <span class="keyword">bool</span> bExistMV = ( C0Avail &amp;&amp; <span class="built_in">getColocatedMVP</span>(pu, REF_PIC_LIST_0, posC0, cColMv, iRefIdx, <span class="literal">false</span> ) )</span><br><span class="line">                            || <span class="built_in">getColocatedMVP</span>( pu, REF_PIC_LIST_0, posC1, cColMv, iRefIdx, <span class="literal">false</span> );</span><br><span class="line">    <span class="keyword">if</span> (bExistMV)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="comment">// ... 将同位MV加入候选列表</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于历史信息的MVP-HMVP"><a href="#基于历史信息的MVP-HMVP" class="headerlink" title="基于历史信息的MVP(HMVP)"></a>基于历史信息的MVP(HMVP)</h2><ul>
+<li>历史候选来源于同一CTU中已帧间编码CU的运动信息</li>
+<li>调用函数 <code>PU::addMergeHMVPCand</code> <a href="/2021/12/13/addMergeHMVPCand/" title="获得HMVP候选">获得HMVP候选</a></li>
+<li>当候选列表长度等于 <code>maxNumMergeCand-1</code> 时，结束查询HMVP候选</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (cnt != maxNumMergeCandMin1)  <span class="comment">// 检查Merge列表是否到达最大数目减1，如果到达则不需要进行HMVP候选</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">bool</span> isGt4x4 = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">bool</span> bFound  = <span class="built_in">addMergeHMVPCand</span>(cs, mrgCtx, mrgCandIdx, maxNumMergeCandMin1, cnt, isAvailableA1, miLeft,</span><br><span class="line">                                   isAvailableB1, miAbove, CU::<span class="built_in">isIBC</span>(*pu.cu), isGt4x4); </span><br><span class="line">    <span class="keyword">if</span> (bFound)  <span class="comment">// Merge参考列表满</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span>;  </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="逐对的平均MVP"><a href="#逐对的平均MVP" class="headerlink" title="逐对的平均MVP"></a>逐对的平均MVP</h2><h3 id="根据Merge候选列表前两项-p0Cand-和-p1Cand-计算平均MV"><a href="#根据Merge候选列表前两项-p0Cand-和-p1Cand-计算平均MV" class="headerlink" title="根据Merge候选列表前两项 p0Cand 和 p1Cand 计算平均MV"></a>根据Merge候选列表前两项 <code>p0Cand</code> 和 <code>p1Cand</code> 计算平均MV</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>( <span class="keyword">int</span> refListId = <span class="number">0</span>; refListId &lt; (slice.<span class="built_in">isInterB</span>() ? <span class="number">2</span> : <span class="number">1</span>); refListId++ )</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">const</span> <span class="keyword">short</span> refIdxI = mrgCtx.mvFieldNeighbours[<span class="number">0</span> * <span class="number">2</span> + refListId].refIdx;</span><br><span class="line">   <span class="keyword">const</span> <span class="keyword">short</span> refIdxJ = mrgCtx.mvFieldNeighbours[<span class="number">1</span> * <span class="number">2</span> + refListId].refIdx;</span><br><span class="line">   <span class="keyword">if</span>( (refIdxI != NOT_VALID) &amp;&amp; (refIdxJ != NOT_VALID) )</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">const</span> Mv&amp; MvI = mrgCtx.mvFieldNeighbours[<span class="number">0</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">      <span class="keyword">const</span> Mv&amp; MvJ = mrgCtx.mvFieldNeighbours[<span class="number">1</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">      Mv avgMv = MvI;</span><br><span class="line">      avgMv += MvJ;</span><br><span class="line">      <span class="built_in">roundAffineMv</span>(avgMv.hor, avgMv.ver, <span class="number">1</span>);  <span class="comment">// 通过移位实现平均</span></span><br><span class="line">      mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + refListId].<span class="built_in">setMvField</span>( avgMv, refIdxI );</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// ...其他情况</span></span><br><span class="line">&#125;       </span><br></pre></td></tr></table></figure>
+
+<h3 id="若仅有一个MV可用，则直接将该MV加入Merge候选列表"><a href="#若仅有一个MV可用，则直接将该MV加入Merge候选列表" class="headerlink" title="若仅有一个MV可用，则直接将该MV加入Merge候选列表"></a>若仅有一个MV可用，则直接将该MV加入Merge候选列表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>( refIdxI != NOT_VALID )</span><br><span class="line">&#123;</span><br><span class="line">   Mv singleMv = mrgCtx.mvFieldNeighbours[<span class="number">0</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">   mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + refListId].<span class="built_in">setMvField</span>( singleMv, refIdxI );</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>( refIdxJ != NOT_VALID )</span><br><span class="line">&#123;</span><br><span class="line">   Mv singleMv = mrgCtx.mvFieldNeighbours[<span class="number">1</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">   mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + refListId].<span class="built_in">setMvField</span>( singleMv, refIdxJ );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PU::getInterMergeCandidates</span><span class="params">( <span class="keyword">const</span> PredictionUnit &amp;pu, MergeCtx&amp; mrgCtx,</span></span></span><br><span class="line"><span class="params"><span class="function">                                 <span class="keyword">int</span> mmvdList,</span></span></span><br><span class="line"><span class="params"><span class="function">                                 <span class="keyword">const</span> <span class="keyword">int</span>&amp; mrgCandIdx )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">unsigned</span> plevel = pu.cs-&gt;sps-&gt;<span class="built_in">getLog2ParallelMergeLevelMinus2</span>() + <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">const</span> CodingStructure &amp;cs  = *pu.cs;</span><br><span class="line">  <span class="keyword">const</span> Slice &amp;slice         = *pu.cs-&gt;slice;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">uint32_t</span> maxNumMergeCand = pu.cs-&gt;sps-&gt;<span class="built_in">getMaxNumMergeCand</span>();</span><br><span class="line">  <span class="built_in">CHECK</span> (maxNumMergeCand &gt; MRG_MAX_NUM_CANDS, <span class="string">&quot;selected maximum number of merge candidate exceeds global limit&quot;</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">bool</span> isEncodeGdrClean = cs.sps-&gt;<span class="built_in">getGDREnabledFlag</span>() &amp;&amp; cs.pcv-&gt;isEncoder &amp;&amp; ((cs.picHeader-&gt;<span class="built_in">getInGdrInterval</span>() &amp;&amp; cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">topRight</span>(), CHANNEL_TYPE_LUMA)) || (cs.picHeader-&gt;<span class="built_in">getNumVerVirtualBoundaries</span>() == <span class="number">0</span>));</span><br><span class="line">  <span class="keyword">bool</span>  allCandSolidInAbove = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">uint32_t</span> ui = <span class="number">0</span>; ui &lt; maxNumMergeCand; ++ui)</span><br><span class="line">  &#123;</span><br><span class="line">    mrgCtx.BcwIdx[ui] = BCW_DEFAULT;</span><br><span class="line">    mrgCtx.interDirNeighbours[ui] = <span class="number">0</span>;</span><br><span class="line">    mrgCtx.mrgTypeNeighbours [ui] = MRG_TYPE_DEFAULT_N;</span><br><span class="line">    mrgCtx.mvFieldNeighbours[(ui &lt;&lt; <span class="number">1</span>)    ].refIdx = NOT_VALID;</span><br><span class="line">    mrgCtx.mvFieldNeighbours[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>].refIdx = NOT_VALID;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">    <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">    &#123;</span><br><span class="line">      mrgCtx.mvSolid[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">      mrgCtx.mvSolid[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = <span class="literal">true</span>;</span><br><span class="line">      mrgCtx.mvValid[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">      mrgCtx.mvValid[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = <span class="literal">true</span>;</span><br><span class="line">      mrgCtx.mvPos[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">      mrgCtx.mvPos[(ui &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    mrgCtx.useAltHpelIf[ui] = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  mrgCtx.numValidMergeCand = maxNumMergeCand;</span><br><span class="line">  <span class="comment">// compute the location of the current PU</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> Position posLT = pu.<span class="built_in">Y</span>().<span class="built_in">topLeft</span>();  <span class="comment">// 当前PU左上角坐标</span></span><br><span class="line">  <span class="keyword">const</span> Position posRT = pu.<span class="built_in">Y</span>().<span class="built_in">topRight</span>();  <span class="comment">// 当前PU右上角坐标</span></span><br><span class="line">  <span class="keyword">const</span> Position posLB = pu.<span class="built_in">Y</span>().<span class="built_in">bottomLeft</span>();  <span class="comment">// 当前PU左下角坐标</span></span><br><span class="line">  MotionInfo miAbove, miLeft, miAboveLeft, miAboveRight, miBelowLeft;  <span class="comment">// 当前PU相邻块运动信息 B0, A0, B2, B1, A1,  </span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// above B0-&gt;A0-&gt;B1-&gt;A1-&gt;(B2)</span></span><br><span class="line">  <span class="keyword">const</span> PredictionUnit *puAbove = cs.<span class="built_in">getPURestricted</span>(posRT.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>), pu, pu.chType);  <span class="comment">// 上方PU，即B1  </span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">bool</span> isAvailableB1 = puAbove &amp;&amp; <span class="built_in">isDiffMER</span>(pu.<span class="built_in">lumaPos</span>(), posRT.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>), plevel) &amp;&amp; pu.cu != puAbove-&gt;cu &amp;&amp; CU::<span class="built_in">isInter</span>(*puAbove-&gt;cu);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isAvailableB1)</span><br><span class="line">  &#123;</span><br><span class="line">    miAbove = puAbove-&gt;<span class="built_in">getMotionInfo</span>(posRT.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// get Inter Dir</span></span><br><span class="line">    mrgCtx.interDirNeighbours[cnt] = miAbove.interDir;  <span class="comment">// B1的参考列表方向(前向，后向，双向)</span></span><br><span class="line">    mrgCtx.useAltHpelIf[cnt] = miAbove.useAltHpelIf;  <span class="comment">// B1的半像素插值滤波器指数</span></span><br><span class="line">    <span class="comment">// get Mv from Above</span></span><br><span class="line">    mrgCtx.BcwIdx[cnt] = (mrgCtx.interDirNeighbours[cnt] == <span class="number">3</span>) ? puAbove-&gt;cu-&gt;BcwIdx : BCW_DEFAULT;  <span class="comment">// 当B1为双向预测时，读取B1的双向加权预测(BCW)权值索引</span></span><br><span class="line">    mrgCtx.mvFieldNeighbours[cnt &lt;&lt; <span class="number">1</span>].<span class="built_in">setMvField</span>(miAbove.mv[<span class="number">0</span>], miAbove.refIdx[<span class="number">0</span>]);  <span class="comment">// 加入B1的前向MV和前向参考帧索引</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">    <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">    &#123;</span><br><span class="line">      Position pos = puAbove-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">      mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = pos;</span><br><span class="line">      mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">      mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miAbove.mv[<span class="number">0</span>], REF_PIC_LIST_0, miAbove.refIdx[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">if</span> (slice.<span class="built_in">isInterB</span>())  <span class="comment">// 判断是否为双向参考</span></span><br><span class="line">    &#123;</span><br><span class="line">      mrgCtx.mvFieldNeighbours[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>].<span class="built_in">setMvField</span>(miAbove.mv[<span class="number">1</span>], miAbove.refIdx[<span class="number">1</span>]);  <span class="comment">// 加入B1的后向MV和后向参考帧索引</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">      <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">      &#123;</span><br><span class="line">        Position pos = puAbove-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">        mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = pos;</span><br><span class="line">        mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">        mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miAbove.mv[<span class="number">1</span>], REF_PIC_LIST_1, miAbove.refIdx[<span class="number">1</span>]);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (mrgCandIdx == cnt)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cnt++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// early termination</span></span><br><span class="line">  <span class="keyword">if</span> (cnt == maxNumMergeCand)   <span class="comment">// 候选列表满</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//left</span></span><br><span class="line">  <span class="keyword">const</span> PredictionUnit* puLeft = cs.<span class="built_in">getPURestricted</span>(posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>), pu, pu.chType);  <span class="comment">// 左侧PU，即A1</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">bool</span> isAvailableA1 = puLeft &amp;&amp; <span class="built_in">isDiffMER</span>(pu.<span class="built_in">lumaPos</span>(), posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>), plevel) &amp;&amp; pu.cu != puLeft-&gt;cu &amp;&amp; CU::<span class="built_in">isInter</span>(*puLeft-&gt;cu);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isAvailableA1)</span><br><span class="line">  &#123;</span><br><span class="line">    miLeft = puLeft-&gt;<span class="built_in">getMotionInfo</span>(posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!isAvailableB1 || (miAbove != miLeft))  <span class="comment">// 冗余性检查，检查A1是否与B1相同</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// get Inter Dir</span></span><br><span class="line">      mrgCtx.interDirNeighbours[cnt] = miLeft.interDir; <span class="comment">// A1的参考列表方向(前向，后向，双向)</span></span><br><span class="line">      mrgCtx.useAltHpelIf[cnt] = miLeft.useAltHpelIf;  <span class="comment">// A1的半像素插值滤波器指数</span></span><br><span class="line">      mrgCtx.BcwIdx[cnt] = (mrgCtx.interDirNeighbours[cnt] == <span class="number">3</span>) ? puLeft-&gt;cu-&gt;BcwIdx : BCW_DEFAULT;  <span class="comment">// 当A1为双向预测时，读取B1的双向加权预测(BCW)权值索引</span></span><br><span class="line">      <span class="comment">// get Mv from Left</span></span><br><span class="line">      mrgCtx.mvFieldNeighbours[cnt &lt;&lt; <span class="number">1</span>].<span class="built_in">setMvField</span>(miLeft.mv[<span class="number">0</span>], miLeft.refIdx[<span class="number">0</span>]);  <span class="comment">// 加入A1的前向MV和前向参考帧索引</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">      <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">      &#123;</span><br><span class="line">        Position pos = puLeft-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">        mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = pos;</span><br><span class="line">        mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">        mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miLeft.mv[<span class="number">0</span>], REF_PIC_LIST_0, miLeft.refIdx[<span class="number">0</span>]);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (slice.<span class="built_in">isInterB</span>())  <span class="comment">// 判断是否为双向参考</span></span><br><span class="line">      &#123;</span><br><span class="line">        mrgCtx.mvFieldNeighbours[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>].<span class="built_in">setMvField</span>(miLeft.mv[<span class="number">1</span>], miLeft.refIdx[<span class="number">1</span>]);  <span class="comment">// 加入A1的后向MV和后向参考帧索引</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">        <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">        &#123;</span><br><span class="line">          Position pos = puLeft-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">          mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = pos;</span><br><span class="line">          mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">          mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miLeft.mv[<span class="number">1</span>], REF_PIC_LIST_1, miLeft.refIdx[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (mrgCandIdx == cnt)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      cnt++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// early termination</span></span><br><span class="line">  <span class="keyword">if</span>( cnt == maxNumMergeCand )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// above right</span></span><br><span class="line">  <span class="keyword">const</span> PredictionUnit *puAboveRight = cs.<span class="built_in">getPURestricted</span>( posRT.<span class="built_in">offset</span>( <span class="number">1</span>, <span class="number">-1</span> ), pu, pu.chType );  <span class="comment">// 右上侧PU，即B0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">bool</span> isAvailableB0 = puAboveRight &amp;&amp; <span class="built_in">isDiffMER</span>( pu.<span class="built_in">lumaPos</span>(), posRT.<span class="built_in">offset</span>(<span class="number">1</span>, <span class="number">-1</span>), plevel) &amp;&amp; CU::<span class="built_in">isInter</span>( *puAboveRight-&gt;cu );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>( isAvailableB0 )</span><br><span class="line">  &#123;</span><br><span class="line">    miAboveRight = puAboveRight-&gt;<span class="built_in">getMotionInfo</span>( posRT.<span class="built_in">offset</span>( <span class="number">1</span>, <span class="number">-1</span> ) );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( !isAvailableB1 || ( miAbove != miAboveRight ) )  <span class="comment">// 冗余性检查，检查B0是否与B1相同</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// get Inter Dir</span></span><br><span class="line">      mrgCtx.interDirNeighbours[cnt] = miAboveRight.interDir;  <span class="comment">// 将B1加入候选列表</span></span><br><span class="line">      mrgCtx.useAltHpelIf[cnt] = miAboveRight.useAltHpelIf;</span><br><span class="line">      <span class="comment">// get Mv from Above-right</span></span><br><span class="line">      mrgCtx.BcwIdx[cnt] = (mrgCtx.interDirNeighbours[cnt] == <span class="number">3</span>) ? puAboveRight-&gt;cu-&gt;BcwIdx : BCW_DEFAULT;</span><br><span class="line">      mrgCtx.mvFieldNeighbours[cnt &lt;&lt; <span class="number">1</span>].<span class="built_in">setMvField</span>( miAboveRight.mv[<span class="number">0</span>], miAboveRight.refIdx[<span class="number">0</span>] );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">      <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">      &#123;</span><br><span class="line">        Position pos = puAboveRight-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">        mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = pos;</span><br><span class="line">        mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">        mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miAboveRight.mv[<span class="number">0</span>], REF_PIC_LIST_0, miAboveRight.refIdx[<span class="number">0</span>]);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>( slice.<span class="built_in">isInterB</span>() )</span><br><span class="line">      &#123;</span><br><span class="line">        mrgCtx.mvFieldNeighbours[( cnt &lt;&lt; <span class="number">1</span> ) + <span class="number">1</span>].<span class="built_in">setMvField</span>( miAboveRight.mv[<span class="number">1</span>], miAboveRight.refIdx[<span class="number">1</span>] );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">        <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">        &#123;</span><br><span class="line">          Position pos = puAboveRight-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">          mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = pos;</span><br><span class="line">          mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">          mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miAboveRight.mv[<span class="number">1</span>], REF_PIC_LIST_1, miAboveRight.refIdx[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (mrgCandIdx == cnt)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      cnt++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// early termination</span></span><br><span class="line">  <span class="keyword">if</span>( cnt == maxNumMergeCand )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//left bottom</span></span><br><span class="line">  <span class="keyword">const</span> PredictionUnit *puLeftBottom = cs.<span class="built_in">getPURestricted</span>( posLB.<span class="built_in">offset</span>( <span class="number">-1</span>, <span class="number">1</span> ), pu, pu.chType );  <span class="comment">// 左下侧PU，即A0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">bool</span> isAvailableA0 = puLeftBottom &amp;&amp; <span class="built_in">isDiffMER</span>( pu.<span class="built_in">lumaPos</span>(), posLB.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">1</span>), plevel) &amp;&amp; CU::<span class="built_in">isInter</span>( *puLeftBottom-&gt;cu );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>( isAvailableA0 )</span><br><span class="line">  &#123;</span><br><span class="line">    miBelowLeft = puLeftBottom-&gt;<span class="built_in">getMotionInfo</span>( posLB.<span class="built_in">offset</span>( <span class="number">-1</span>, <span class="number">1</span> ) );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( !isAvailableA1 || ( miBelowLeft != miLeft ) )  <span class="comment">// 冗余性检查，检查A0是否与A1相同</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// get Inter Dir</span></span><br><span class="line">      mrgCtx.interDirNeighbours[cnt] = miBelowLeft.interDir;</span><br><span class="line">      mrgCtx.useAltHpelIf[cnt] = miBelowLeft.useAltHpelIf;</span><br><span class="line">      mrgCtx.BcwIdx[cnt] = (mrgCtx.interDirNeighbours[cnt] == <span class="number">3</span>) ? puLeftBottom-&gt;cu-&gt;BcwIdx : BCW_DEFAULT;</span><br><span class="line">      <span class="comment">// get Mv from Bottom-Left</span></span><br><span class="line">      mrgCtx.mvFieldNeighbours[cnt &lt;&lt; <span class="number">1</span>].<span class="built_in">setMvField</span>( miBelowLeft.mv[<span class="number">0</span>], miBelowLeft.refIdx[<span class="number">0</span>] );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">      <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">      &#123;</span><br><span class="line">        Position pos = puLeftBottom-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">        mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = pos;</span><br><span class="line">        mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">        mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miBelowLeft.mv[<span class="number">0</span>], REF_PIC_LIST_0, miBelowLeft.refIdx[<span class="number">0</span>]);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>( slice.<span class="built_in">isInterB</span>() )</span><br><span class="line">      &#123;</span><br><span class="line">        mrgCtx.mvFieldNeighbours[( cnt &lt;&lt; <span class="number">1</span> ) + <span class="number">1</span>].<span class="built_in">setMvField</span>( miBelowLeft.mv[<span class="number">1</span>], miBelowLeft.refIdx[<span class="number">1</span>] );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">        <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">        &#123;</span><br><span class="line">          Position pos = puLeftBottom-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">          mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = pos;</span><br><span class="line">          mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">          mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miBelowLeft.mv[<span class="number">1</span>], REF_PIC_LIST_1, miBelowLeft.refIdx[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (mrgCandIdx == cnt)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      cnt++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// early termination</span></span><br><span class="line">  <span class="keyword">if</span>( cnt == maxNumMergeCand )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// above left</span></span><br><span class="line">  <span class="keyword">if</span> ( cnt &lt; <span class="number">4</span> )  <span class="comment">// 判断候选列表未满，则查询左上侧PU，即B2</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">const</span> PredictionUnit *puAboveLeft = cs.<span class="built_in">getPURestricted</span>( posLT.<span class="built_in">offset</span>( <span class="number">-1</span>, <span class="number">-1</span> ), pu, pu.chType );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> isAvailableB2 = puAboveLeft &amp;&amp; <span class="built_in">isDiffMER</span>( pu.<span class="built_in">lumaPos</span>(), posLT.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">-1</span>), plevel ) &amp;&amp; CU::<span class="built_in">isInter</span>( *puAboveLeft-&gt;cu );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( isAvailableB2 ) </span><br><span class="line">    &#123;</span><br><span class="line">      miAboveLeft = puAboveLeft-&gt;<span class="built_in">getMotionInfo</span>( posLT.<span class="built_in">offset</span>( <span class="number">-1</span>, <span class="number">-1</span> ) );</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>( ( !isAvailableA1 || ( miLeft != miAboveLeft ) ) &amp;&amp; ( !isAvailableB1 || ( miAbove != miAboveLeft ) ) )  <span class="comment">// 冗余性检查，检查B2是否与B1和A1相同</span></span><br><span class="line">      &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// get Inter Dir</span></span><br><span class="line">        mrgCtx.interDirNeighbours[cnt] = miAboveLeft.interDir;</span><br><span class="line">        mrgCtx.useAltHpelIf[cnt] = miAboveLeft.useAltHpelIf;</span><br><span class="line">        mrgCtx.BcwIdx[cnt] = (mrgCtx.interDirNeighbours[cnt] == <span class="number">3</span>) ? puAboveLeft-&gt;cu-&gt;BcwIdx : BCW_DEFAULT;</span><br><span class="line">        <span class="comment">// get Mv from Above-Left</span></span><br><span class="line">        mrgCtx.mvFieldNeighbours[cnt &lt;&lt; <span class="number">1</span>].<span class="built_in">setMvField</span>( miAboveLeft.mv[<span class="number">0</span>], miAboveLeft.refIdx[<span class="number">0</span>] );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">        <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">        &#123;</span><br><span class="line">          Position pos = puAboveLeft-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">          mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = pos;</span><br><span class="line">          mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">          mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">0</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miAboveLeft.mv[<span class="number">0</span>], REF_PIC_LIST_0, miAboveLeft.refIdx[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( slice.<span class="built_in">isInterB</span>() )</span><br><span class="line">        &#123;</span><br><span class="line">          mrgCtx.mvFieldNeighbours[( cnt &lt;&lt; <span class="number">1</span> ) + <span class="number">1</span>].<span class="built_in">setMvField</span>( miAboveLeft.mv[<span class="number">1</span>], miAboveLeft.refIdx[<span class="number">1</span>] );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">          <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">          &#123;</span><br><span class="line">            Position pos = puAboveLeft-&gt;<span class="built_in">lumaPos</span>();</span><br><span class="line">            mrgCtx.mvPos[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = pos;</span><br><span class="line">            mrgCtx.mvSolid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pos, pu.chType);</span><br><span class="line">            mrgCtx.mvValid[(cnt &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), miAboveLeft.mv[<span class="number">1</span>], REF_PIC_LIST_1, miAboveLeft.refIdx[<span class="number">1</span>]);</span><br><span class="line">          &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mrgCandIdx == cnt)</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cnt++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// early termination</span></span><br><span class="line">  <span class="keyword">if</span> (cnt == maxNumMergeCand)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 时域候选列表</span></span><br><span class="line">  <span class="keyword">if</span> (slice.<span class="built_in">getPicHeader</span>()-&gt;<span class="built_in">getEnableTMVPFlag</span>() &amp;&amp; (pu.<span class="built_in">lumaSize</span>().width + pu.<span class="built_in">lumaSize</span>().height &gt; <span class="number">12</span>))  <span class="comment">// 当启用时域MVP且PU尺寸大于等于8x8</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">//&gt;&gt; MTK colocated-RightBottom</span></span><br><span class="line">    <span class="comment">// offset the pos to be sure to &quot;point&quot; to the same position the uiAbsPartIdx would&#x27;ve pointed to</span></span><br><span class="line">    Position posRB = pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>().<span class="built_in">offset</span>( <span class="number">-3</span>, <span class="number">-3</span> );</span><br><span class="line">    <span class="keyword">const</span> PreCalcValues&amp; pcv = *cs.pcv;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">    <span class="keyword">bool</span> posC0inCurPicSolid = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">bool</span> posC1inCurPicSolid = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">bool</span> posC0inRefPicSolid = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">bool</span> posC1inRefPicSolid = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    Position posC0;</span><br><span class="line">    Position posC1 = pu.<span class="built_in">Y</span>().<span class="built_in">center</span>();</span><br><span class="line">    <span class="keyword">bool</span> C0Avail = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">bool</span> boundaryCond = ((posRB.x + pcv.minCUWidth) &lt; pcv.lumaWidth) &amp;&amp; ((posRB.y + pcv.minCUHeight) &lt; pcv.lumaHeight);</span><br><span class="line">    <span class="keyword">const</span> SubPic&amp; curSubPic = pu.cs-&gt;slice-&gt;<span class="built_in">getPPS</span>()-&gt;<span class="built_in">getSubPicFromPos</span>(pu.<span class="built_in">lumaPos</span>());</span><br><span class="line">    <span class="keyword">if</span> (curSubPic.<span class="built_in">getTreatedAsPicFlag</span>())  <span class="comment">// 判断在不包括环路内滤波操作的解码处理中，是否将子图视为图</span></span><br><span class="line">    &#123;</span><br><span class="line">      boundaryCond = ((posRB.x + pcv.minCUWidth) &lt;= curSubPic.<span class="built_in">getSubPicRight</span>() &amp;&amp;</span><br><span class="line">                      (posRB.y + pcv.minCUHeight) &lt;= curSubPic.<span class="built_in">getSubPicBottom</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (boundaryCond)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">int</span> posYInCtu = posRB.y &amp; pcv.maxCUHeightMask;</span><br><span class="line">      <span class="keyword">if</span> (posYInCtu + <span class="number">4</span> &lt; pcv.maxCUHeight)  <span class="comment">// C0可用</span></span><br><span class="line">      &#123;</span><br><span class="line">        posC0 = posRB.<span class="built_in">offset</span>(<span class="number">4</span>, <span class="number">4</span>);</span><br><span class="line">        C0Avail = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Mv        cColMv;  <span class="comment">// 同位MV</span></span><br><span class="line">    <span class="keyword">int</span>       iRefIdx     = <span class="number">0</span>;  <span class="comment">// 候选的参考帧</span></span><br><span class="line">    <span class="keyword">int</span>       dir         = <span class="number">0</span>;  <span class="comment">// 单向/双向</span></span><br><span class="line">    <span class="keyword">unsigned</span>  uiArrayAddr = cnt;</span><br><span class="line">    <span class="keyword">bool</span>      bExistMV    = ( C0Avail &amp;&amp; <span class="built_in">getColocatedMVP</span>(pu, REF_PIC_LIST_0, posC0, cColMv, iRefIdx, <span class="literal">false</span> ) )</span><br><span class="line">                              || <span class="built_in">getColocatedMVP</span>( pu, REF_PIC_LIST_0, posC1, cColMv, iRefIdx, <span class="literal">false</span> );   <span class="comment">//检查是否存在同位MV，若存在则获取相应的MV到cColMv</span></span><br><span class="line">    <span class="keyword">if</span> (bExistMV)</span><br><span class="line">    &#123;</span><br><span class="line">      dir     |= <span class="number">1</span>;</span><br><span class="line">      mrgCtx.mvFieldNeighbours[<span class="number">2</span> * uiArrayAddr].<span class="built_in">setMvField</span>(cColMv, iRefIdx);  <span class="comment">// 加入邻居MV列表</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">      <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">      &#123;</span><br><span class="line">        Mv ccMv;</span><br><span class="line"></span><br><span class="line">        posC0inCurPicSolid = cs.<span class="built_in">isClean</span>(posC0, CHANNEL_TYPE_LUMA);</span><br><span class="line">        posC1inCurPicSolid = cs.<span class="built_in">isClean</span>(posC1, CHANNEL_TYPE_LUMA);</span><br><span class="line">        posC0inRefPicSolid = cs.<span class="built_in">isClean</span>(posC0, REF_PIC_LIST_0, iRefIdx);</span><br><span class="line">        posC1inRefPicSolid = cs.<span class="built_in">isClean</span>(posC1, REF_PIC_LIST_0, iRefIdx);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">bool</span> isMVP0exist = C0Avail &amp;&amp; <span class="built_in">getColocatedMVP</span>(pu, REF_PIC_LIST_0, posC0, ccMv, iRefIdx, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        Position pos = isMVP0exist ? posC0 : posC1;</span><br><span class="line">        mrgCtx.mvPos[<span class="number">2</span> * uiArrayAddr] = pos;</span><br><span class="line">        mrgCtx.mvSolid[<span class="number">2</span> * uiArrayAddr] = isMVP0exist ? (posC0inCurPicSolid &amp;&amp; posC0inRefPicSolid) : (posC1inCurPicSolid &amp;&amp; posC1inRefPicSolid);</span><br><span class="line">        mrgCtx.mvValid[<span class="number">2</span> * uiArrayAddr] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), ccMv, REF_PIC_LIST_0, iRefIdx);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (slice.<span class="built_in">isInterB</span>())</span><br><span class="line">    &#123;</span><br><span class="line">      bExistMV = ( C0Avail &amp;&amp; <span class="built_in">getColocatedMVP</span>(pu, REF_PIC_LIST_1, posC0, cColMv, iRefIdx, <span class="literal">false</span> ) )</span><br><span class="line">                   || <span class="built_in">getColocatedMVP</span>( pu, REF_PIC_LIST_1, posC1, cColMv, iRefIdx, <span class="literal">false</span> );</span><br><span class="line">      <span class="keyword">if</span> (bExistMV)</span><br><span class="line">      &#123;</span><br><span class="line">        dir     |= <span class="number">2</span>;  <span class="comment">// 双向候选</span></span><br><span class="line">        mrgCtx.mvFieldNeighbours[<span class="number">2</span> * uiArrayAddr + <span class="number">1</span>].<span class="built_in">setMvField</span>(cColMv, iRefIdx);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">        <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">        &#123;</span><br><span class="line">          Mv ccMv;</span><br><span class="line"></span><br><span class="line">          posC0inCurPicSolid = cs.<span class="built_in">isClean</span>(posC0, CHANNEL_TYPE_LUMA);</span><br><span class="line">          posC1inCurPicSolid = cs.<span class="built_in">isClean</span>(posC1, CHANNEL_TYPE_LUMA);</span><br><span class="line">          posC0inRefPicSolid = cs.<span class="built_in">isClean</span>(posC0, REF_PIC_LIST_1, iRefIdx);</span><br><span class="line">          posC1inRefPicSolid = cs.<span class="built_in">isClean</span>(posC1, REF_PIC_LIST_1, iRefIdx);</span><br><span class="line"></span><br><span class="line">          <span class="keyword">bool</span> isMVP0exist = C0Avail &amp;&amp; <span class="built_in">getColocatedMVP</span>(pu, REF_PIC_LIST_1, posC0, ccMv, iRefIdx, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">          Position pos = isMVP0exist ? posC0 : posC1;</span><br><span class="line">          mrgCtx.mvPos[<span class="number">2</span> * uiArrayAddr + <span class="number">1</span>] = pos;</span><br><span class="line">          mrgCtx.mvSolid[<span class="number">2</span> * uiArrayAddr + <span class="number">1</span>] = isMVP0exist ? (posC0inCurPicSolid &amp;&amp; posC0inRefPicSolid) : (posC1inCurPicSolid &amp;&amp; posC1inRefPicSolid);</span><br><span class="line">          mrgCtx.mvValid[<span class="number">2</span> * uiArrayAddr + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), ccMv, REF_PIC_LIST_1, iRefIdx);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( dir != <span class="number">0</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">bool</span> addTMvp = <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">if</span>( addTMvp )</span><br><span class="line">      &#123;</span><br><span class="line">        mrgCtx.interDirNeighbours[uiArrayAddr] = dir;  <span class="comment">// 加入候选列表</span></span><br><span class="line">        mrgCtx.BcwIdx[uiArrayAddr] = BCW_DEFAULT;</span><br><span class="line">        mrgCtx.useAltHpelIf[uiArrayAddr] = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (mrgCandIdx == cnt)</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cnt++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// early termination</span></span><br><span class="line">  <span class="keyword">if</span> (cnt == maxNumMergeCand)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 基于历史信息构建候选</span></span><br><span class="line">  <span class="keyword">int</span> maxNumMergeCandMin1 = maxNumMergeCand - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (cnt != maxNumMergeCandMin1)  <span class="comment">// 检查Merge列表是否到达最大数目减1，如果到达则不需要进行HMV候选</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">bool</span> isGt4x4 = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">    allCandSolidInAbove = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">    <span class="keyword">bool</span> bFound  = <span class="built_in">addMergeHMVPCand</span>(cs, mrgCtx, mrgCandIdx, maxNumMergeCandMin1, cnt, isAvailableA1, miLeft,</span><br><span class="line">                                   isAvailableB1, miAbove, CU::<span class="built_in">isIBC</span>(*pu.cu), isGt4x4, pu, allCandSolidInAbove);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">bool</span> bFound  = <span class="built_in">addMergeHMVPCand</span>(cs, mrgCtx, mrgCandIdx, maxNumMergeCandMin1, cnt, isAvailableA1, miLeft,</span><br><span class="line">                                   isAvailableB1, miAbove, CU::<span class="built_in">isIBC</span>(*pu.cu), isGt4x4);  <span class="comment">// 添加基于历史信息的候选(HMVP)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (bFound)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// pairwise-average candidates 成对平均候选MV</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (cnt &gt; <span class="number">1</span> &amp;&amp; cnt &lt; maxNumMergeCand)</span><br><span class="line">    &#123;</span><br><span class="line">      mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span>].<span class="built_in">setMvField</span>( <span class="built_in">Mv</span>( <span class="number">0</span>, <span class="number">0</span> ), NOT_VALID );</span><br><span class="line">      mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + <span class="number">1</span>].<span class="built_in">setMvField</span>( <span class="built_in">Mv</span>( <span class="number">0</span>, <span class="number">0</span> ), NOT_VALID );</span><br><span class="line">      <span class="comment">// calculate average MV for L0 and L1 seperately 分别计算L0和L1的平均MV</span></span><br><span class="line">      <span class="keyword">unsigned</span> <span class="keyword">char</span> interDir = <span class="number">0</span>;</span><br><span class="line">      <span class="comment">// 设置半像素插值滤波器指数，若p0Cand和p1Cand半像素插值滤波器指数不同，则将平均MV的滤波器指数置为0</span></span><br><span class="line">      mrgCtx.useAltHpelIf[cnt] = (mrgCtx.useAltHpelIf[<span class="number">0</span>] == mrgCtx.useAltHpelIf[<span class="number">1</span>]) ? mrgCtx.useAltHpelIf[<span class="number">0</span>] : <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">for</span>( <span class="keyword">int</span> refListId = <span class="number">0</span>; refListId &lt; (slice.<span class="built_in">isInterB</span>() ? <span class="number">2</span> : <span class="number">1</span>); refListId++ )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">short</span> refIdxI = mrgCtx.mvFieldNeighbours[<span class="number">0</span> * <span class="number">2</span> + refListId].refIdx;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">short</span> refIdxJ = mrgCtx.mvFieldNeighbours[<span class="number">1</span> * <span class="number">2</span> + refListId].refIdx;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">        <span class="comment">// GDR: Pairwise average candidate</span></span><br><span class="line">        <span class="keyword">bool</span> mvISolid = mrgCtx.mvSolid[<span class="number">0</span> * <span class="number">2</span> + refListId];</span><br><span class="line">        <span class="keyword">bool</span> mvJSolid = mrgCtx.mvSolid[<span class="number">1</span> * <span class="number">2</span> + refListId];</span><br><span class="line">        <span class="keyword">bool</span> mvSolid = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        <span class="comment">// both MVs are invalid, skip  两个MV都无效</span></span><br><span class="line">        <span class="keyword">if</span>( (refIdxI == NOT_VALID) &amp;&amp; (refIdxJ == NOT_VALID) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        interDir += <span class="number">1</span> &lt;&lt; refListId;  <span class="comment">// 帧间预测方向</span></span><br><span class="line">        <span class="comment">// both MVs are valid, average these two MVs  两个MV都有效</span></span><br><span class="line">        <span class="keyword">if</span>( (refIdxI != NOT_VALID) &amp;&amp; (refIdxJ != NOT_VALID) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">const</span> Mv&amp; MvI = mrgCtx.mvFieldNeighbours[<span class="number">0</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">          <span class="keyword">const</span> Mv&amp; MvJ = mrgCtx.mvFieldNeighbours[<span class="number">1</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line"></span><br><span class="line">          <span class="comment">// average two MVs</span></span><br><span class="line">          Mv avgMv = MvI;</span><br><span class="line">          avgMv += MvJ;</span><br><span class="line">          <span class="built_in">roundAffineMv</span>(avgMv.hor, avgMv.ver, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">          mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + refListId].<span class="built_in">setMvField</span>( avgMv, refIdxI );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">          <span class="comment">// GDR: Pairwise single I,J candidate</span></span><br><span class="line">          <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">          &#123;</span><br><span class="line">            mvSolid = mvISolid &amp;&amp; mvJSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line"></span><br><span class="line">            mrgCtx.mvPos[cnt * <span class="number">2</span> + refListId] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            mrgCtx.mvSolid[cnt * <span class="number">2</span> + refListId] = mvSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line">            mrgCtx.mvValid[cnt * <span class="number">2</span> + refListId] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), avgMv, (RefPicList)refListId, refIdxI);</span><br><span class="line">            allCandSolidInAbove = mvSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line">          &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// only one MV is valid, take the only one MV  只有一个向量有效</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>( refIdxI != NOT_VALID )</span><br><span class="line">        &#123;</span><br><span class="line">          Mv singleMv = mrgCtx.mvFieldNeighbours[<span class="number">0</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">          mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + refListId].<span class="built_in">setMvField</span>( singleMv, refIdxI );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">          <span class="comment">// GDR: Pairwise single I,J candidate</span></span><br><span class="line">          <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">          &#123;</span><br><span class="line">            mvSolid = mvISolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line"></span><br><span class="line">            mrgCtx.mvPos[cnt * <span class="number">2</span> + refListId] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            mrgCtx.mvSolid[cnt * <span class="number">2</span> + refListId] = mvSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line">            mrgCtx.mvValid[cnt * <span class="number">2</span> + refListId] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), singleMv, (RefPicList)refListId, refIdxI);</span><br><span class="line">            allCandSolidInAbove = mvSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line">          &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>( refIdxJ != NOT_VALID )</span><br><span class="line">        &#123;</span><br><span class="line">          Mv singleMv = mrgCtx.mvFieldNeighbours[<span class="number">1</span> * <span class="number">2</span> + refListId].mv;</span><br><span class="line">          mrgCtx.mvFieldNeighbours[cnt * <span class="number">2</span> + refListId].<span class="built_in">setMvField</span>( singleMv, refIdxJ );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">          <span class="comment">// GDR: Pairwise single I,J candidate</span></span><br><span class="line">          <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">          &#123;</span><br><span class="line">            mvSolid = mvJSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line"></span><br><span class="line">            mrgCtx.mvPos[cnt * <span class="number">2</span> + refListId] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            mrgCtx.mvSolid[cnt * <span class="number">2</span> + refListId] = mvSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line">            mrgCtx.mvValid[cnt * <span class="number">2</span> + refListId] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), singleMv, (RefPicList)refListId, refIdxJ);</span><br><span class="line">            allCandSolidInAbove = mvSolid &amp;&amp; allCandSolidInAbove;</span><br><span class="line">          &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      mrgCtx.interDirNeighbours[cnt] = interDir;</span><br><span class="line">      <span class="keyword">if</span>( interDir &gt; <span class="number">0</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        cnt++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// early termination</span></span><br><span class="line">    <span class="keyword">if</span>( cnt == maxNumMergeCand )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">uint32_t</span> uiArrayAddr = cnt;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> iNumRefIdx = slice.<span class="built_in">isInterB</span>() ? std::<span class="built_in">min</span>(slice.<span class="built_in">getNumRefIdx</span>(REF_PIC_LIST_0), slice.<span class="built_in">getNumRefIdx</span>(REF_PIC_LIST_1)) : slice.<span class="built_in">getNumRefIdx</span>(REF_PIC_LIST_0);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 补充零MV</span></span><br><span class="line">  <span class="keyword">int</span> r = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> refcnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (uiArrayAddr &lt; maxNumMergeCand)  <span class="comment">// 填充前向(0,0)</span></span><br><span class="line">  &#123;</span><br><span class="line">    mrgCtx.interDirNeighbours [uiArrayAddr     ] = <span class="number">1</span>;</span><br><span class="line">    mrgCtx.BcwIdx             [uiArrayAddr     ] = BCW_DEFAULT;</span><br><span class="line">    mrgCtx.mvFieldNeighbours  [uiArrayAddr &lt;&lt; <span class="number">1</span>].<span class="built_in">setMvField</span>(<span class="built_in">Mv</span>(<span class="number">0</span>, <span class="number">0</span>), r);</span><br><span class="line">    mrgCtx.useAltHpelIf[uiArrayAddr] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">    <span class="comment">// GDR: zero mv(0,0)</span></span><br><span class="line">    <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">    &#123;</span><br><span class="line">      mrgCtx.mvPos[uiArrayAddr &lt;&lt; <span class="number">1</span>] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">      mrgCtx.mvSolid[uiArrayAddr &lt;&lt; <span class="number">1</span>] = <span class="literal">true</span> &amp;&amp; allCandSolidInAbove;</span><br><span class="line">      mrgCtx.mvValid[uiArrayAddr &lt;&lt; <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), <span class="built_in">Mv</span>(<span class="number">0</span>, <span class="number">0</span>), REF_PIC_LIST_0, r);</span><br><span class="line">      allCandSolidInAbove = <span class="literal">true</span> &amp;&amp; allCandSolidInAbove;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">if</span> (slice.<span class="built_in">isInterB</span>())  <span class="comment">// B帧填充后向(0,0)</span></span><br><span class="line">    &#123;</span><br><span class="line">      mrgCtx.interDirNeighbours [ uiArrayAddr          ] = <span class="number">3</span>;</span><br><span class="line">      mrgCtx.mvFieldNeighbours  [(uiArrayAddr &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>].<span class="built_in">setMvField</span>(<span class="built_in">Mv</span>(<span class="number">0</span>, <span class="number">0</span>), r);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> GDR_ENABLED</span></span><br><span class="line">      <span class="comment">// GDR: zero mv(0,0)</span></span><br><span class="line">      <span class="keyword">if</span> (isEncodeGdrClean)</span><br><span class="line">      &#123;</span><br><span class="line">        mrgCtx.mvPos[(uiArrayAddr &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = <span class="built_in">Position</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        mrgCtx.mvSolid[(uiArrayAddr &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = <span class="literal">true</span> &amp;&amp; allCandSolidInAbove;</span><br><span class="line">        mrgCtx.mvValid[(uiArrayAddr &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>] = cs.<span class="built_in">isClean</span>(pu.<span class="built_in">Y</span>().<span class="built_in">bottomRight</span>(), <span class="built_in">Mv</span>(<span class="number">0</span>, <span class="number">0</span>), (RefPicList)REF_PIC_LIST_1, r);</span><br><span class="line">        allCandSolidInAbove = <span class="literal">true</span> &amp;&amp; allCandSolidInAbove;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( mrgCtx.interDirNeighbours[uiArrayAddr] == <span class="number">1</span> &amp;&amp; pu.cs-&gt;slice-&gt;<span class="built_in">getRefPic</span>(REF_PIC_LIST_0, mrgCtx.mvFieldNeighbours[uiArrayAddr &lt;&lt; <span class="number">1</span>].refIdx)-&gt;<span class="built_in">getPOC</span>() == pu.cs-&gt;slice-&gt;<span class="built_in">getPOC</span>())</span><br><span class="line">    &#123;</span><br><span class="line">      mrgCtx.mrgTypeNeighbours[uiArrayAddr] = MRG_TYPE_IBC;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    uiArrayAddr++;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (refcnt == iNumRefIdx - <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      r = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      ++r;</span><br><span class="line">      ++refcnt;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  mrgCtx.numValidMergeCand = uiArrayAddr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Xiangrui Liu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://liuxiangrui.github.io/2021/12/13/getInterMergeCandidates/" title="VTM代码阅读：PU::getInterMergeCandidates">https://liuxiangrui.github.io/2021/12/13/getInterMergeCandidates/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/" rel="tag"># 帧间预测</a>
+          
+            <a href="/tags/VVC/" rel="tag"># VVC</a>
+          
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB/" rel="tag"># 代码阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/13/xCheckRDCostMerge2Nx2N/" rel="next" title="VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N">
+                <i class="fa fa-chevron-left"></i> VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/13/Merge/" rel="prev" title="Merge模式">
+                Merge模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/LiuXiangrui" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:301100322@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Merge%E6%A8%A1%E5%BC%8F%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">4.1.</span> <span class="nav-text">Merge模式上下文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9B%B8%E9%82%BB%E5%9D%97%E7%9A%84%E7%A9%BA%E5%9F%9FMVP"><span class="nav-number">4.2.</span> <span class="nav-text">基于相邻块的空域MVP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%90%8C%E4%BD%8D%E5%9D%97%E7%9A%84%E6%97%B6%E5%9F%9FMVP-TMVP"><span class="nav-number">4.3.</span> <span class="nav-text">基于同位块的时域MVP(TMVP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%8E%86%E5%8F%B2%E4%BF%A1%E6%81%AF%E7%9A%84MVP-HMVP"><span class="nav-number">4.4.</span> <span class="nav-text">基于历史信息的MVP(HMVP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%90%E5%AF%B9%E7%9A%84%E5%B9%B3%E5%9D%87MVP"><span class="nav-number">4.5.</span> <span class="nav-text">逐对的平均MVP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AEMerge%E5%80%99%E9%80%89%E5%88%97%E8%A1%A8%E5%89%8D%E4%B8%A4%E9%A1%B9-p0Cand-%E5%92%8C-p1Cand-%E8%AE%A1%E7%AE%97%E5%B9%B3%E5%9D%87MV"><span class="nav-number">4.5.1.</span> <span class="nav-text">根据Merge候选列表前两项 p0Cand 和 p1Cand 计算平均MV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8B%A5%E4%BB%85%E6%9C%89%E4%B8%80%E4%B8%AAMV%E5%8F%AF%E7%94%A8%EF%BC%8C%E5%88%99%E7%9B%B4%E6%8E%A5%E5%B0%86%E8%AF%A5MV%E5%8A%A0%E5%85%A5Merge%E5%80%99%E9%80%89%E5%88%97%E8%A1%A8"><span class="nav-number">4.5.2.</span> <span class="nav-text">若仅有一个MV可用，则直接将该MV加入Merge候选列表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-block">
+          <div class="links-of-blogroll-title">
+            <!-- modify icon to fire by szw -->
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            近期文章
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/AMVP/" title="高级运动矢量预测(AMVP)" target="_blank">高级运动矢量预测(AMVP)</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/Merge/" title="Merge模式" target="_blank">Merge模式</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/getInterMergeCandidates/" title="VTM代码阅读：PU::getInterMergeCandidates" target="_blank">VTM代码阅读：PU::getInterMergeCandidates</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/xCheckRDCostMerge2Nx2N/" title="VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N" target="_blank">VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/addMergeHMVPCand/" title="VTM代码阅读：PU::addMergeHMVPCand" target="_blank">VTM代码阅读：PU::addMergeHMVPCand</a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiangrui Liu</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">83k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点总阅读次数">1:23</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

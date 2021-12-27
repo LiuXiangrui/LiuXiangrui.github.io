@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="about">
+<meta property="og:url" content="https://liuxiangrui.github.io/about/index.html">
+<meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-31T02:05:56.000Z">
+<meta property="article:modified_time" content="2021-12-24T16:35:50.511Z">
+<meta property="article:author" content="Xiangrui Liu">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liuxiangrui.github.io/about/"/>
+
+
+
+
+
+  <title>帧内帧间联合预测(CIIP)) | Liu Xiangrui's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Liu Xiangrui's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuxiangrui.github.io/2021/12/13/CIIP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Liu Xiangrui's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">帧内帧间联合预测(CIIP))</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-13T00:30:25+08:00">2021-12-13</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">视频编码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">17k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">17 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>CIIP预测根据帧间Merge模式预测与帧内Planar模式预测值加权生成预测信号<br>$$<br>P_{CIIP} = (wInter * P_{inter} + wIntra * P_{intra} + 2) &gt;&gt; 2<br>$$</p>
+<h2 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h2><ul>
+<li>当前CU以Merge模式编码</li>
+<li>CU的亮度分量尺寸大于64，且宽高均小于<code>MAX_CU_SIZE=128</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EncCu::xCheckRDCostMerge2Nx2N</span><span class="params">( CodingStructure *&amp;tempCS, CodingStructure *&amp;bestCS, Partitioner &amp;partitioner, <span class="keyword">const</span> EncTestMode&amp; encTestMode )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">bool</span> isIntrainterEnabled = sps.<span class="built_in">getUseCiip</span>();  <span class="comment">// CIIP标志</span></span><br><span class="line">   <span class="keyword">if</span> (bestCS-&gt;area.<span class="built_in">lwidth</span>() * bestCS-&gt;area.<span class="built_in">lheight</span>() &lt; <span class="number">64</span> || bestCS-&gt;area.<span class="built_in">lwidth</span>() &gt;= MAX_CU_SIZE || bestCS-&gt;area.<span class="built_in">lheight</span>() &gt;= MAX_CU_SIZE)</span><br><span class="line">   &#123;</span><br><span class="line">      isIntrainterEnabled = <span class="literal">false</span>;  <span class="comment">// CU的亮度分量尺寸大于64，且宽高均小于128</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><h2 id="调用函数-IntraPrediction-geneWeightedPred-计算CIIP预测"><a href="#调用函数-IntraPrediction-geneWeightedPred-计算CIIP预测" class="headerlink" title="调用函数 IntraPrediction::geneWeightedPred 计算CIIP预测"></a>调用函数 <code>IntraPrediction::geneWeightedPred</code> 计算CIIP预测</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EncCu::xCheckRDCostMerge2Nx2N</span><span class="params">( CodingStructure *&amp;tempCS, CodingStructure *&amp;bestCS, Partitioner &amp;partitioner, <span class="keyword">const</span> EncTestMode&amp; encTestMode )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   <span class="keyword">if</span>( !bestIsSkip )  <span class="comment">// 最佳模式非Skip模式</span></span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// ... 常规Merge模式</span></span><br><span class="line">      <span class="keyword">if</span> (isIntrainterEnabled)  <span class="comment">// CIIP模式可用</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="comment">// 遍历CIIP模式需要测试的候选Merge模式</span></span><br><span class="line">         <span class="keyword">for</span> (<span class="keyword">uint32_t</span> mergeCnt = <span class="number">0</span>; mergeCnt &lt; std::<span class="built_in">min</span>(std::<span class="built_in">min</span>(NUM_MRG_SATD_CAND, (<span class="keyword">const</span> <span class="keyword">int</span>)mergeCtx.numValidMergeCand), <span class="number">4</span>); mergeCnt++)</span><br><span class="line">         &#123;</span><br><span class="line">            pu.intraDir[<span class="number">0</span>] = PLANAR_IDX;  <span class="comment">// 帧内用Planar模式</span></span><br><span class="line">            <span class="comment">// 产生帧内帧间联合预测像素</span></span><br><span class="line">            <span class="keyword">if</span> (mergeCnt == <span class="number">0</span>)  <span class="comment">// 帧内预测只需计算一次</span></span><br><span class="line">            &#123;</span><br><span class="line">               <span class="comment">// ... 计算帧内预测值</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 计算CIIP预测像素</span></span><br><span class="line">            m_pcIntraSearch-&gt;<span class="built_in">geneWeightedPred</span>(COMPONENT_Y, pu.cs-&gt;<span class="built_in">getPredBuf</span>(pu).<span class="built_in">Y</span>(), pu, m_pcIntraSearch-&gt;<span class="built_in">getPredictorPtr2</span>(COMPONENT_Y, intraCnt));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// ... 计算SATD-Cost</span></span><br><span class="line">            <span class="comment">// ... 更新Merge候选列表</span></span><br><span class="line">      <span class="comment">// ... MMVD模式等其他模式</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算CIIP权重"><a href="#计算CIIP权重" class="headerlink" title="计算CIIP权重"></a>计算CIIP权重</h3><ul>
+<li>权重 <code>wIntra</code> 和 <code>wMerge</code> 取决于当前CU的顶部和左侧相邻块的编码模式</li>
+<li>若top和left相邻块可用且都是帧内编码，则 <code>wIntra=3, wMerge=1</code> </li>
+<li>若top和left相邻块仅有一个是帧内编码，则 <code>wIntra=2, wMerge=2</code> </li>
+<li>若top和left相邻块均为帧间编码，将wt设置为1</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">IntraPrediction::geneWeightedPred</span><span class="params">(<span class="keyword">const</span> ComponentID compId, PelBuf &amp;pred, <span class="keyword">const</span> PredictionUnit &amp;pu, Pel *srcBuf)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   <span class="keyword">const</span> PredictionUnit *neigh0 = pu.cs-&gt;<span class="built_in">getPURestricted</span>(posBL.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>), pu, CHANNEL_TYPE_LUMA);  <span class="comment">// 当前PU的左下相邻块</span></span><br><span class="line">   <span class="keyword">const</span> PredictionUnit *neigh1 = pu.cs-&gt;<span class="built_in">getPURestricted</span>(posTR.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>), pu, CHANNEL_TYPE_LUMA);  <span class="comment">// 当前PU的右上相邻块</span></span><br><span class="line">   <span class="keyword">bool</span> isNeigh0Intra = neigh0 &amp;&amp; (CU::<span class="built_in">isIntra</span>(*neigh0-&gt;cu));</span><br><span class="line">   <span class="keyword">bool</span> isNeigh1Intra = neigh1 &amp;&amp; (CU::<span class="built_in">isIntra</span>(*neigh1-&gt;cu));</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">if</span> (isNeigh0Intra &amp;&amp; isNeigh1Intra)  <span class="comment">// 左侧和上侧相邻块都是帧内编码</span></span><br><span class="line">   &#123;</span><br><span class="line">      wIntra = <span class="number">3</span>; wMerge = <span class="number">1</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">if</span> (!isNeigh0Intra &amp;&amp; !isNeigh1Intra)  <span class="comment">// 左侧和上侧相邻块均为帧间编码</span></span><br><span class="line">      &#123;</span><br><span class="line">         wIntra = <span class="number">1</span>; wMerge = <span class="number">3</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">         wIntra = <span class="number">2</span>; wMerge = <span class="number">2</span>;  <span class="comment">// 仅有一个是帧内编码</span></span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算CIIP预测"><a href="#计算CIIP预测" class="headerlink" title="计算CIIP预测"></a>计算CIIP预测</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ... 计算CIIP权重</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; height; y++)  <span class="comment">//对帧内帧间预测信号进行加权平均</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) </span><br><span class="line">   &#123;</span><br><span class="line">      dstBuf[y*dstStride + x] = (wMerge * dstBuf[y*dstStride + x] + wIntra * srcBuf[y*srcStride + x] + <span class="number">2</span>) &gt;&gt; <span class="number">2</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">IntraPrediction::geneWeightedPred</span><span class="params">(<span class="keyword">const</span> ComponentID compId, PelBuf &amp;pred, <span class="keyword">const</span> PredictionUnit &amp;pu, Pel *srcBuf)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span>            width = pred.width;</span><br><span class="line">  <span class="built_in">CHECK</span>(width == <span class="number">2</span>, <span class="string">&quot;Width of 2 is not supported&quot;</span>);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span>            height = pred.height;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span>            srcStride = width;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span>            dstStride = pred.stride;</span><br><span class="line"> </span><br><span class="line">  Pel*                 dstBuf = pred.buf;</span><br><span class="line">  <span class="keyword">int</span> wIntra, wMerge;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">const</span> Position posBL = pu.<span class="built_in">Y</span>().<span class="built_in">bottomLeft</span>(); <span class="comment">//当前PU的左下位置</span></span><br><span class="line">  <span class="keyword">const</span> Position posTR = pu.<span class="built_in">Y</span>().<span class="built_in">topRight</span>(); <span class="comment">//当前PU的右上位置</span></span><br><span class="line">  <span class="comment">/// 当前PU的左下相邻块和右下相邻块</span></span><br><span class="line">  <span class="keyword">const</span> PredictionUnit *neigh0 = pu.cs-&gt;<span class="built_in">getPURestricted</span>(posBL.<span class="built_in">offset</span>(<span class="number">-1</span>, <span class="number">0</span>), pu, CHANNEL_TYPE_LUMA);</span><br><span class="line">  <span class="keyword">const</span> PredictionUnit *neigh1 = pu.cs-&gt;<span class="built_in">getPURestricted</span>(posTR.<span class="built_in">offset</span>(<span class="number">0</span>, <span class="number">-1</span>), pu, CHANNEL_TYPE_LUMA);</span><br><span class="line">  <span class="keyword">bool</span> isNeigh0Intra = neigh0 &amp;&amp; (CU::<span class="built_in">isIntra</span>(*neigh0-&gt;cu));</span><br><span class="line">  <span class="keyword">bool</span> isNeigh1Intra = neigh1 &amp;&amp; (CU::<span class="built_in">isIntra</span>(*neigh1-&gt;cu));</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">if</span> (isNeigh0Intra &amp;&amp; isNeigh1Intra) <span class="comment">//左侧和上侧相邻块都是帧内编码</span></span><br><span class="line">  &#123;</span><br><span class="line">    wIntra = <span class="number">3</span>; wMerge = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isNeigh0Intra &amp;&amp; !isNeigh1Intra)<span class="comment">//左侧和上侧相邻块都不是帧内编码</span></span><br><span class="line">    &#123;</span><br><span class="line">      wIntra = <span class="number">1</span>; wMerge = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      wIntra = <span class="number">2</span>; wMerge = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; height; y++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) <span class="comment">//对帧内帧间预测信号进行加权平均</span></span><br><span class="line">    &#123;</span><br><span class="line">      dstBuf[y*dstStride + x] = (wMerge * dstBuf[y*dstStride + x] + wIntra * srcBuf[y*srcStride + x] + <span class="number">2</span>) &gt;&gt; <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Xiangrui Liu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://liuxiangrui.github.io/2021/12/13/CIIP/" title="帧内帧间联合预测(CIIP))">https://liuxiangrui.github.io/2021/12/13/CIIP/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/" rel="tag"># 帧间预测</a>
+          
+            <a href="/tags/VVC/" rel="tag"># VVC</a>
+          
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB/" rel="tag"># 代码阅读</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/13/%E4%BB%BF%E5%B0%84%E8%BF%90%E5%8A%A8%E8%A1%A5%E5%81%BF%E9%A2%84%E6%B5%8B/" rel="next" title="仿射运动补偿预测">
+                <i class="fa fa-chevron-left"></i> 仿射运动补偿预测
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/13/MMVD/" rel="prev" title="带有运动矢量差的Merge(MMVD)">
+                带有运动矢量差的Merge(MMVD) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/LiuXiangrui" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:301100322@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0-IntraPrediction-geneWeightedPred-%E8%AE%A1%E7%AE%97CIIP%E9%A2%84%E6%B5%8B"><span class="nav-number">2.1.</span> <span class="nav-text">调用函数 IntraPrediction::geneWeightedPred 计算CIIP预测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97CIIP%E6%9D%83%E9%87%8D"><span class="nav-number">2.1.1.</span> <span class="nav-text">计算CIIP权重</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97CIIP%E9%A2%84%E6%B5%8B"><span class="nav-number">2.1.2.</span> <span class="nav-text">计算CIIP预测</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+      
+      
+        <div class="links-of-blogroll motion-element links-of-blogroll-block">
+          <div class="links-of-blogroll-title">
+            <!-- modify icon to fire by szw -->
+            <i class="fa fa-history fa-" aria-hidden="true"></i>
+            近期文章
+          </div>
+          <ul class="links-of-blogroll-list">
+            
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/AMVP/" title="高级运动矢量预测(AMVP)" target="_blank">高级运动矢量预测(AMVP)</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/Merge/" title="Merge模式" target="_blank">Merge模式</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/getInterMergeCandidates/" title="VTM代码阅读：PU::getInterMergeCandidates" target="_blank">VTM代码阅读：PU::getInterMergeCandidates</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/xCheckRDCostMerge2Nx2N/" title="VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N" target="_blank">VTM代码阅读：EncCu::xCheckRDCostMerge2Nx2N</a>
+              </li>
+            
+              <li class="recent_posts_li">
+                <a href="/2021/12/13/addMergeHMVPCand/" title="VTM代码阅读：PU::addMergeHMVPCand" target="_blank">VTM代码阅读：PU::addMergeHMVPCand</a>
+              </li>
+            
+          </ul>
+        </div>
+      
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiangrui Liu</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">83k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点总阅读次数">1:23</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
