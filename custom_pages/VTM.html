@@ -2,7 +2,7 @@
 <html style="height: 100%">
     <head>
         <meta charset="utf-8">
-        <title>VTM函数调用关系图</title>
+        <title>VTM函数调用关系</title>
     </head>
     <body style="height: 100%; margin: 0">
         <div id="container" style="height: 100%"></div>
@@ -23,6 +23,7 @@
                 show: true,
                 trigger: "item",
                 triggerOn: "mousemove",
+                backgroundColor:'rgba(255,255,255,0.65)',
                 formatter: function (params) {
                   if (params.dataType === 'node'){
                     var description = '';
@@ -44,7 +45,7 @@
               }],
               series: [{
                 type: 'graph',
-                layout: 'none',
+                layout: 'circular',
                 data: graph.nodes,  // nodes
                 links: graph.links,  // edges
                 categories: graph.categories,  // categories
@@ -54,7 +55,7 @@
                   position: 'right',
                   formatter: '{b}',
                   fontFamily: 'serif',
-                  fontSize: 14,
+                  fontSize: 12,
                 },
                 labelLayout: {
                   hideOverlap: true
