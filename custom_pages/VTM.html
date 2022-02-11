@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta charset="utf-8">
+        <title>ECharts</title>
+    </head>
+    <body style="height: 100%; margin: 0">
+        <div id="container" style="height: 100%"></div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+        <script type="text/javascript">
+          var dom = document.getElementById("container");
+          var myChart = echarts.init(dom);
+          var app = {};
+
+          var option;
+
+          myChart.showLoading();
+          $.getJSON('data.json', function (graph) {
+            myChart.hideLoading();
+            option = {
+              tooltip: {
+                show: true,
+                trigger: "item",
+                triggerOn: "mousemove",
+                formatter: function (params) {
+                  if (params.dataType === 'node'){
+                    var description = '';
+                    description += "<h3>" + params.data.name + "</h3>";
+                    description += params.data.description;
+                    return description;
+                  } 
+            }
+              },
+              title: {
+                text: 'Function list in VTM'
+              },
+              animationDurationUpdate: 1500,
+              animationEasingUpdate: 'quinticInOut',
+              legend: [{
+                data: graph.categories.map(function (a) {
+                  return a.name;
+                })
+              }],
+              series: [{
+                type: 'graph',
+                layout: 'none',
+                data: graph.nodes,  // nodes
+                links: graph.links,  // edges
+                categories: graph.categories,  // categories
+                roam: true,
+                label: {
+                  show: true,
+                  position: 'right',
+                  formatter: '{b}',
+                  fontFamily: 'serif',
+                  fontSize: 14,
+                },
+                labelLayout: {
+                  hideOverlap: true
+                },
+                emphasis: {
+                  focus: 'adjacency',
+                  label: {
+                    position: 'right',
+                    show: true
+                  }
+                },
+                roam: true,
+                scaleLimit: {
+                  min: 0.4,
+                  max: 2
+                },
+                lineStyle: {
+                  color: 'source',
+                  curveness: 0.3
+                },
+                edgeSymbol: ['none', 'arrow'],
+                edgeSymbolSize: [10, 9],
+              }]
+            };
+            myChart.setOption(option);
+          });
+
+          if (option && typeof option === 'object') {
+            myChart.setOption(option);
+          }
+
+          myChart.on('click', function(params) {
+            var data = params.data;
+            if (data != null && data != undefined)
+              if (data.url != null && data.url != undefined)
+                window.open(data.url);
+          });          
+        </script>
+    </body>
+</html>
+    
