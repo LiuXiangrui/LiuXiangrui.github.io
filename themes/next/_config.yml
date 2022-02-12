@@ -94,7 +94,8 @@ menu:
   categories: /categories/|| th
   archives: /archives/
   #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
+  VCnotes: https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/|| calendar
+  VTMmap: /custom_pages/VTM.html|| sitemap
   #commonweal: /404/ || heartbeat
 
 # Enable/Disable menu icons.
