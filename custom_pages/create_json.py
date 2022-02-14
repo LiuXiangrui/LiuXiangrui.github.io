@@ -117,6 +117,6 @@ data["nodes"] = nodes
 data["links"] = links
 data["categories"] = [{"name": i} for i in categories]
 
-with open("./data.json","w") as f:
+json_path = sys.argv[2]
+with open(json_path,"w") as f:
     json.dump(data, f, ensure_ascii=False)
-
