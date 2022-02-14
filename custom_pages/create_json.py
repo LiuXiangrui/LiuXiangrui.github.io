@@ -1,6 +1,7 @@
 import json
 import random
 import csv 
+import sys
 
 width = 1800
 height = 400
@@ -45,9 +46,11 @@ class FunctionDescription:
         }
         return data
 
-nodes = {}
-data = load_csv('function.csv')
 
+csv_path = sys.argv[1]
+data = load_csv(csv_path)
+
+nodes = {}
 for item in data:
     nodes[item[0]] = FunctionDescription(name=item[0], father=item[1], category=item[2], description=item[3], url=item[4])
 
