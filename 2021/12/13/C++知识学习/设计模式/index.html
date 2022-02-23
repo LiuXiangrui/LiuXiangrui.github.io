@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>设计模式 | Liu Xiangrui's Blog</title><meta name="keywords" content="设计模式"><meta name="author" content="Xiangrui Liu"><meta name="copyright" content="Xiangrui Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="设计模式六大原则 开闭原则：一个软件实体如类、模块和函数应该对修改封闭，对扩展开放 单一职责原则：一个类只做一件事，一个类应该只有一个引起它修改的原因。 里氏替换原则：子类应该可以完全替换父类，子类不应破坏父类原有功能 依赖倒置原则：细节应该依赖于抽象，抽象不应依赖于细节。把抽象层放在程序设计的高层，并保持稳定，程序的细节变化由低层的实现层来完成。 迪米特法则：一个类不应知道自己操作的类的细节 接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式">
+<meta property="og:url" content="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
+<meta property="og:description" content="设计模式六大原则 开闭原则：一个软件实体如类、模块和函数应该对修改封闭，对扩展开放 单一职责原则：一个类只做一件事，一个类应该只有一个引起它修改的原因。 里氏替换原则：子类应该可以完全替换父类，子类不应破坏父类原有功能 依赖倒置原则：细节应该依赖于抽象，抽象不应依赖于细节。把抽象层放在程序设计的高层，并保持稳定，程序的细节变化由低层的实现层来完成。 迪米特法则：一个类不应知道自己操作的类的细节 接">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-12-12T16:30:25.000Z">
+<meta property="article:modified_time" content="2022-02-23T17:01:32.297Z">
+<meta property="article:author" content="Xiangrui Liu">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '设计模式',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-24 01:01:32'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-clock/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">45</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/"><i class="fa-fw fas fa-link"></i><span> 视频编码笔记</span></a></div><div class="menus_item"><a class="site-page" href="/custom_pages/VTM.html"><i class="fa-fw fas fa-sitemap"></i><span> VTM函数调用关系</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liu Xiangrui's Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/"><i class="fa-fw fas fa-link"></i><span> 视频编码笔记</span></a></div><div class="menus_item"><a class="site-page" href="/custom_pages/VTM.html"><i class="fa-fw fas fa-sitemap"></i><span> VTM函数调用关系</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">设计模式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-12T16:30:25.000Z" title="发表于 2021-12-13 00:30:25">2021-12-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-02-23T17:01:32.297Z" title="更新于 2022-02-24 01:01:32">2022-02-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="设计模式六大原则"><a href="#设计模式六大原则" class="headerlink" title="设计模式六大原则"></a>设计模式六大原则</h1><ul>
+<li>开闭原则：一个软件实体如类、模块和函数应该对修改封闭，对扩展开放</li>
+<li>单一职责原则：一个类只做一件事，一个类应该只有一个引起它修改的原因。</li>
+<li>里氏替换原则：子类应该可以完全替换父类，子类不应破坏父类原有功能</li>
+<li>依赖倒置原则：细节应该依赖于抽象，抽象不应依赖于细节。把抽象层放在程序设计的高层，并保持稳定，程序的细节变化由低层的实现层来完成。</li>
+<li>迪米特法则：一个类不应知道自己操作的类的细节</li>
+<li>接口隔离原则：客户端不应依赖它不需要的接口。如果一个接口在实现时，部分方法由于冗余被客户端空实现，则应该将接口拆分，让实现类只需依赖自己需要的接口方法</li>
+</ul>
+<h1 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h1><div class="markmap-container" style="height:300px">
+                <svg class="markmap-svg">{"t":"list_item","d":2,"p":{"lines":[0,1]},"v":"创建型模型","c":[{"t":"list_item","d":4,"p":{"lines":[1,2]},"v":"工厂模式"},{"t":"list_item","d":4,"p":{"lines":[2,3]},"v":"抽象工厂模式"},{"t":"list_item","d":4,"p":{"lines":[3,4]},"v":"单例模式"},{"t":"list_item","d":4,"p":{"lines":[4,5]},"v":"构建者模式"},{"t":"list_item","d":4,"p":{"lines":[5,6]},"v":"原型模式"}]}</svg>
+              </div>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>工厂模式将类的构建过程封装，从而降低代码耦合程度</p>
+<h3 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h3><ul>
+<li>简单工厂模式通过单一的工厂类 <code>Factory</code> 构建所有产品</li>
+<li>当需要生产的产品过多时，工厂类会承担过多的职责，违背了单一职责原则</li>
+<li>当需要生产新的产品时，必须在工厂类中添加新的分支，违背了开闭原则</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span>:</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">init_params</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span>:</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">init_params</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Factory</span>:</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">create</span>(<span class="params">product_type: <span class="built_in">str</span></span>):</span><br><span class="line">    init_params_a = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">    init_params_b = <span class="string">&#x27;yyy&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> product_type == <span class="string">&#x27;a&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> ProductA(init_params_a)</span><br><span class="line">    <span class="keyword">elif</span> product_type == <span class="string">&#x27;b&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> ProductB(init_params_b)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Client</span>:</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">client_operation</span>():</span><br><span class="line">    factory = Factory()</span><br><span class="line">    product_a = factory.create(product_type=<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">    product_b = factory.create(product_type=<span class="string">&#x27;b)</span></span><br><span class="line"><span class="string">    product_a.operation()</span></span><br><span class="line"><span class="string">    product_b.operation()</span></span><br></pre></td></tr></table></figure>
+<h3 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h3><ul>
+<li>工厂方法模式规定规定每个产品都有一个专属工厂类</li>
+<li>当需要生产的产品过多时，工厂类不会变成超级类</li>
+<li>当需要生产新的产品时，无需更改既有的工厂</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryA</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create</span>():</span><br><span class="line">      init_params = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">      <span class="keyword">return</span> ProductA(init_params)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryB</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create</span>():</span><br><span class="line">      init_params = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">      <span class="keyword">return</span> ProductB(init_params)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Client</span>:</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">client_operation</span>():</span><br><span class="line">    factory_a = FactoryA()</span><br><span class="line">    product_a = factory_a.create()</span><br><span class="line">    factory_b = FactoryB()</span><br><span class="line">    product_b = factory_b.create()</span><br><span class="line">    product_a.operation()</span><br><span class="line">    product_b.operation()</span><br></pre></td></tr></table></figure>
+<h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><ul>
+<li>抽象出工厂接口后，客户端只需调用抽象类的接口即可构建构建产品</li>
+<li>抽象工厂模式能够简单地替换工厂类<blockquote>
+<p>例如将程序中的 SQL数据库整个替换为 Access 数据库，使用抽象方法模式的话，只需在 IFactory 接口中定义好增删改查四个方法，让 SQLFactory 和 AccessFactory 实现此接口，调用时直接使用 IFactory 中的抽象方法即可，调用者无需知道使用的什么数据库，我们就可以非常方便的整个替换程序的数据库，并且让客户端毫不知。</p>
+</blockquote>
+</li>
+<li>抽象工厂模式替换具体工厂时只需更改一行代码，但要新增抽象方法则需要修改所有的具体工厂类，所以<strong>抽象工厂模式适用于增加同类工厂的横向扩展需求</strong>，不适合新增功能的纵向扩展</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AbstractFactory</span>:</span><br><span class="line">  __metaclass__ = ABCMeta</span><br><span class="line">  </span><br><span class="line"><span class="meta">  @abstractmethod</span></span><br><span class="line">  create():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FacotryA</span>(<span class="title class_ inherited__">AbstractFactory</span>):</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">create</span>():</span><br><span class="line">    init_params = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> ProductA(init_params)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryC</span>(<span class="title class_ inherited__">AbstractFactory</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create</span>():</span><br><span class="line">      init_params = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">      <span class="keyword">return</span> ProductC(init_params)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Client</span>:</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">client_operation</span>():</span><br><span class="line">    factory = FactoryA()</span><br><span class="line">    product = factory.create()</span><br><span class="line">    product.operation()</span><br><span class="line"></span><br><span class="line">    factory = FactoryC()  <span class="comment"># only modify this statement to change concrete factory</span></span><br><span class="line">    product = factory.create()   </span><br><span class="line">    product.operation()</span><br></pre></td></tr></table></figure>
+<h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>某个对象全局只需要一个实例时，就可以使用单例模式</p>
+<ul>
+<li>单例模式能够避免对象重复创建，节约空间并提升效率</li>
+<li>单例模式能给避免由于操作不同实例导致的逻辑错误</li>
+<li>单例模式有两种实现方式：饿汉式（变量在声明时便初始化）和懒汉式（声明一个空变量，需要用时才初始化）</li>
+<li>懒汉式单例不是线程安全的，需要给判空过程加上锁</li>
+</ul>
+<h2 id="构建者模式"><a href="#构建者模式" class="headerlink" title="构建者模式"></a>构建者模式</h2><p>构建者模式用于创建过程稳定，但配置多变的对象</p>
+<ul>
+<li>建造者模式主要用来通过链式调用生成不同的配置<blockquote>
+<p>例如，我们要制作一杯珍珠奶茶。它的制作过程是稳定的，除了必须要知道奶茶的种类和规格外，是否加珍珠和是否加冰是可选的</p>
+</blockquote>
+</li>
+<li>必须配置的属性，通过构造方法传入</li>
+<li>可选的属性通过链式调用方法传入，如果不配置，将使用默认配置</li>
+<li>建造者模式的优点在于能够保证配置均被指定，即构建过程是稳定的</li>
+</ul>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p>用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象</p>
+<h1 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h1><div class="markmap-container" style="height:300px">
+                <svg class="markmap-svg">{"t":"list_item","d":2,"p":{"lines":[0,1]},"v":"结构型模型","c":[{"t":"list_item","d":4,"p":{"lines":[1,2]},"v":"适配器模式"},{"t":"list_item","d":4,"p":{"lines":[2,3]},"v":"桥接模式"},{"t":"list_item","d":4,"p":{"lines":[3,4]},"v":"装饰器模式"},{"t":"list_item","d":4,"p":{"lines":[4,5]},"v":"外观模式"},{"t":"list_item","d":4,"p":{"lines":[5,6]},"v":"享元模式"},{"t":"list_item","d":4,"p":{"lines":[6,7]},"v":"过滤器模式"},{"t":"list_item","d":4,"p":{"lines":[7,8]},"v":"组合模式"},{"t":"list_item","d":4,"p":{"lines":[8,9]},"v":"代理模式"}]}</svg>
+              </div>
+<h2 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h2><p>将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类能一起工作</p>
+<h2 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h2><p>将抽象部分与它的实现部分分离，使它们都可以独立地变化</p>
+<ul>
+<li><strong>合成/聚合复用原则：优先使用合成/聚合，而不是类继承</strong><blockquote>
+<p>如果一个对象有两种或者多种分类方式，并且两种分类方式都容易变化，这时使用继承很容易造成子类越来越多. 所以更好的做法是把这种分类方式分离出来，让他们独立变化，使用时将不同的分类进行组合即可</p>
+</blockquote>
+</li>
+<li>将子类的区别方式分离成接口，通过组合的方式桥接，主要用于两个或多个同等级的接口</li>
+</ul>
+<h2 id="组合模式"><a href="#组合模式" class="headerlink" title="组合模式"></a>组合模式</h2><p>组合模式用于整体与部分的结构，当整体与部分有相似的结构，在操作时可以被一致对待时，就可以使用组合模式</p>
+<ul>
+<li>组合模式依据树形结构来组合对象，允许用户一致地对待整体和部分结构</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Component</span>:</span><br><span class="line">  __metaclass__ = ABCMeta</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">property_1: <span class="built_in">str</span>, property_2: <span class="built_in">str</span></span>):</span><br><span class="line">    self.property_1 = property_1</span><br><span class="line">    self.property_2 = property_2</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">work</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Property1 = &quot;</span>, self.property_1, <span class="string">&quot; and property 2 = &quot;</span>, self.property_2)</span><br><span class="line"></span><br><span class="line"><span class="meta">  @abstractmethod</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">addComponent</span>(<span class="params">component: Component</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">  @abstractmethod</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">removeComponent</span>(<span class="params">component_idx: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">  @abstractmethod</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">check</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Manager</span>(<span class="title class_ inherited__">Component</span>):</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">property_1: <span class="built_in">str</span>, property_2: <span class="built_in">str</span></span>):</span><br><span class="line">    <span class="built_in">super</span>.init(property_1, property_2)</span><br><span class="line">    self.__components = []</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">addComponent</span>(<span class="params">component: Component</span>):</span><br><span class="line">    self.__components.append(component)</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">removeComponent</span>(<span class="params">component_idx: <span class="built_in">int</span></span>):</span><br><span class="line">    self.__components.pop(component_idx)</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">check</span>():</span><br><span class="line">    self.work()</span><br><span class="line">    <span class="keyword">for</span> component <span class="keyword">in</span> self.__components:</span><br><span class="line">      component.check()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Employee</span>(<span class="title class_ inherited__">Component</span>):</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">property_1: <span class="built_in">str</span>, property_2: <span class="built_in">str</span></span>):</span><br><span class="line">    <span class="built_in">super</span>.init(property_1, property_2)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">addComponent</span>(<span class="params">component: Component</span>):</span><br><span class="line">    <span class="keyword">raise</span> AttributeError</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">removeComponent</span>(<span class="params">component_idx: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">raise</span> AttributeError</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">check</span>():</span><br><span class="line">    self.work()</span><br></pre></td></tr></table></figure>
+<h2 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h2><p>动态地给一个对象增加一些额外的职责</p>
+<ul>
+<li>装饰模式是继承的一种替代方案，<strong>不会改变原有的类</strong></li>
+<li>装饰模式的主要作用：增强一个类原有的功能或为一个类添加新的功能</li>
+<li>与生成子类相比，装饰模式能够更为灵活地增加对象功能</li>
+<li>装饰类不应该存在依赖关系，而应该在原本的类上进行装饰</li>
+</ul>
+<h2 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h2><p>外部与一个子系统的通信必须通过一个统一的外观对象进行，为子系统中的一组接口提供一个一致的界面</p>
+<ul>
+<li>外观模式使得两种不同的类不用直接交互，而是通过一个中间件进行间接交互</li>
+<li><strong>外观模式的本质是封装</strong></li>
+</ul>
+<h2 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h2><p>享元模式体现的是程序可复用的特点，为了节约宝贵的内存，程序应该尽可能地复用</p>
+<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>为对象提供一个代理，并由代理对象控制对原对象的引用</p>
+<ul>
+<li>装饰模式是为了增强或添加功能，代理模式主要是为了<strong>控制对象</strong></li>
+</ul>
+<h1 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h1><div class="markmap-container" style="height:300px">
+                <svg class="markmap-svg">{"t":"list_item","d":2,"p":{"lines":[0,1]},"v":"行为型模型","c":[{"t":"list_item","d":4,"p":{"lines":[1,2]},"v":"责任链模式"},{"t":"list_item","d":4,"p":{"lines":[2,3]},"v":"命令模式"},{"t":"list_item","d":4,"p":{"lines":[3,4]},"v":"解释器模式"},{"t":"list_item","d":4,"p":{"lines":[4,5]},"v":"迭代器模式"},{"t":"list_item","d":4,"p":{"lines":[5,6]},"v":"中介者模式"},{"t":"list_item","d":4,"p":{"lines":[6,7]},"v":"备忘录模式"},{"t":"list_item","d":4,"p":{"lines":[7,8]},"v":"观察者模式"},{"t":"list_item","d":4,"p":{"lines":[8,9]},"v":"状态模式"},{"t":"list_item","d":4,"p":{"lines":[9,10]},"v":"空对象模式"},{"t":"list_item","d":4,"p":{"lines":[10,11]},"v":"策略模式"},{"t":"list_item","d":4,"p":{"lines":[11,12]},"v":"模板模式"},{"t":"list_item","d":4,"p":{"lines":[12,13]},"v":"访问者模式"}]}</svg>
+              </div>
+<h2 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h2><p>将对象连成一条链，并沿着这条链传递请求，直到有一个对象处理请求为止</p>
+<ul>
+<li>责任链模式使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系</li>
+<li>责任链模式可以根据需要增加新的请求处理类</li>
+</ul>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>将一个请求封装为一个对象，从而可用不同的请求对客户进行参数化，对请求排队或记录请求日志，以及支持可撤销的操作</p>
+<h2 id="中介者模式"><a href="#中介者模式" class="headerlink" title="中介者模式"></a>中介者模式</h2><p>将类与类之间的多对多关系简化成多对一和一对多关系</p>
+<h2 id="备忘录模式"><a href="#备忘录模式" class="headerlink" title="备忘录模式"></a>备忘录模式</h2><p>在不破坏封装的条件下，通过备忘录对象存储另外一个对象内部状态的快照，在将来合适的时候把这个对象还原到存储起来的状态</p>
+<h2 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h2><p>定义一个作用于某对象结构中的各元素的操作，使得可以在不改变各元素的类的前提下定义作用于这些元素的新操作</p>
+<ul>
+<li>核心思想：<strong>将数据的结构和对数据的操作分离</strong></li>
+</ul>
+
+  <style>.markmap-container{display:flex;justify-content:center;margin:0 auto;width:90%;height:500px}.markmap-container svg{width:100%;height:100%}@media(max-width:768px){.markmap-container{height:400px}}</style>
+  <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.7.4/dist/browser/view.min.js"></script>
+  <script>
+    const mindmaps = document.querySelectorAll('.markmap-svg');
+    for(let mindmap of mindmaps) {
+        markmap.markmap(mindmap, JSON.parse(mindmap.innerHTML));
+    }
+  </script> <script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Xiangrui Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">https://liuxiangrui.github.io/2021/12/13/C++知识学习/设计模式/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://liuxiangrui.github.io" target="_blank">Liu Xiangrui's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/29/%E5%BE%85%E6%95%B4%E7%90%86/fillAffineMvpCand/"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2021/12/13/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/Class_MergeCtx/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MergeCtx 类</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiangrui Liu</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">45</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a id="card-info-btn" href="/custom_pages/VTM.html"><i class="fas fa-sitemap"></i><span>VTM函数关系图</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LiuXiangrui" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:301100322@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/custom_pages/VTM.html" target="_blank" title="VTM函数调用关系"><i class="fas fa-sitemap"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">最近尝试用js做了一个VTM函数关系图, 欢迎大家提意见～</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%85%AD%E5%A4%A7%E5%8E%9F%E5%88%99"><span class="toc-number">1.</span> <span class="toc-text">设计模式六大原则</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">创建型模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">工厂模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.1.</span> <span class="toc-text">简单工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.2.</span> <span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.3.</span> <span class="toc-text">抽象工厂模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">构建者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.4.</span> <span class="toc-text">原型模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">结构型模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">适配器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">桥接模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.3.</span> <span class="toc-text">组合模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.4.</span> <span class="toc-text">装饰器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.5.</span> <span class="toc-text">外观模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.6.</span> <span class="toc-text">享元模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.7.</span> <span class="toc-text">代理模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">行为型模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">责任链模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">命令模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.3.</span> <span class="toc-text">中介者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.4.</span> <span class="toc-text">备忘录模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.5.</span> <span class="toc-text">访问者模式</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterPrediction_xSubPuMC/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/22/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterPrediction_xSubPuMC/" title="无题">无题</a><time datetime="2022-02-22T11:58:42.013Z" title="发表于 2022-02-22 19:58:42">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/CommonLib/%5Bundo%5DPU_getInterMergeSubPuMvpCand/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/22/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/CommonLib/%5Bundo%5DPU_getInterMergeSubPuMvpCand/" title="无题">无题</a><time datetime="2022-02-22T11:58:27.449Z" title="发表于 2022-02-22 19:58:27">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/CommonLib/%5Bundo%5DPU_getAffineMergeCand/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/22/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/CommonLib/%5Bundo%5DPU_getAffineMergeCand/" title="无题">无题</a><time datetime="2022-02-22T11:58:11.018Z" title="发表于 2022-02-22 19:58:11">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/19/VVC%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/%5Bundo%5D%E4%BB%BF%E5%B0%84%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/19/VVC%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/%5Bundo%5D%E4%BB%BF%E5%B0%84%E5%B8%A7%E9%97%B4%E9%A2%84%E6%B5%8B/" title="无题">无题</a><time datetime="2022-02-18T16:24:08.719Z" title="发表于 2022-02-19 00:24:08">2022-02-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/19/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostInterIMV/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/19/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostInterIMV/" title="无题">无题</a><time datetime="2022-02-18T16:23:12.980Z" title="发表于 2022-02-19 00:23:12">2022-02-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Xiangrui Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://npm.elemecdn.com/hexo-butterfly-clock/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = '/posts/,/about/,/custom_pages'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://npm.elemecdn.com/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
