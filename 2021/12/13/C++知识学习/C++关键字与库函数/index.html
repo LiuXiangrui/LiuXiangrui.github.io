@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C++关键字与库函数 | Liu Xiangrui's Blog</title><meta name="keywords" content="C++"><meta name="author" content="Xiangrui Liu"><meta name="copyright" content="Xiangrui Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Sizeof 与 Strlen 作用到字符数组到区别 strlen 是函数，在程序执行时计算；sizeof 是运算符，在编译时计算 strlen 测量字符串的实际长度，sizeof 测量字符数组的分配大小 若字符数组 arr 作为函数的形参，sizeof(arr) 获得字符指针的长度，strlen(arr) 获得字符串长度 前者在运行时计算字符串长度，后者在编译时计算字符数组长度。  Explic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++关键字与库函数">
+<meta property="og:url" content="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8E%E5%BA%93%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
+<meta property="og:description" content="Sizeof 与 Strlen 作用到字符数组到区别 strlen 是函数，在程序执行时计算；sizeof 是运算符，在编译时计算 strlen 测量字符串的实际长度，sizeof 测量字符数组的分配大小 若字符数组 arr 作为函数的形参，sizeof(arr) 获得字符指针的长度，strlen(arr) 获得字符串长度 前者在运行时计算字符串长度，后者在编译时计算字符数组长度。  Explic">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-12-12T16:30:25.000Z">
+<meta property="article:modified_time" content="2022-02-27T12:03:05.467Z">
+<meta property="article:author" content="Xiangrui Liu">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8E%E5%BA%93%E5%87%BD%E6%95%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++关键字与库函数',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-27 20:03:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-clock/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/"><i class="fa-fw fas fa-link"></i><span> 视频编码笔记</span></a></div><div class="menus_item"><a class="site-page" href="/custom_pages/VTM.html"><i class="fa-fw fas fa-sitemap"></i><span> VTM函数调用关系</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liu Xiangrui's Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/"><i class="fa-fw fas fa-link"></i><span> 视频编码笔记</span></a></div><div class="menus_item"><a class="site-page" href="/custom_pages/VTM.html"><i class="fa-fw fas fa-sitemap"></i><span> VTM函数调用关系</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++关键字与库函数</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-12T16:30:25.000Z" title="发表于 2021-12-13 00:30:25">2021-12-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-02-27T12:03:05.467Z" title="更新于 2022-02-27 20:03:05">2022-02-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Sizeof-与-Strlen-作用到字符数组到区别"><a href="#Sizeof-与-Strlen-作用到字符数组到区别" class="headerlink" title="Sizeof 与 Strlen 作用到字符数组到区别"></a><code>Sizeof</code> 与 <code>Strlen</code> 作用到字符数组到区别</h1><ul>
+<li><code>strlen</code> 是函数，在程序执行时计算；<code>sizeof</code> 是运算符，在编译时计算</li>
+<li><code>strlen</code> 测量字符串的实际长度，<code>sizeof</code> 测量字符数组的分配大小</li>
+<li>若字符数组 <code>arr</code> 作为函数的形参，<code>sizeof(arr)</code> 获得字符指针的长度，<code>strlen(arr)</code> 获得字符串长度</li>
+<li>前者在运行时计算字符串长度，后者在编译时计算字符数组长度。</li>
+</ul>
+<h1 id="Explicit-避免编译器进行隐式类型转换"><a href="#Explicit-避免编译器进行隐式类型转换" class="headerlink" title="Explicit 避免编译器进行隐式类型转换"></a><code>Explicit</code> 避免编译器进行隐式类型转换</h1><ul>
+<li><code>explicit</code> 关键字用来声明类构造函数是显示调用的可以阻止调用构造函数时进行隐式转换</li>
+<li><code>explicit</code> 关键字只可用于修饰单参构造函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> var;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">A</span><span class="params">(<span class="type">int</span> tmp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        var = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">A <span class="title">ex</span><span class="params">(<span class="number">100</span>)</span></span>;  <span class="comment">// ok</span></span><br><span class="line">    A ex1 = <span class="number">10</span>; <span class="comment">// error: conversion from &#x27;int&#x27; to non-scalar type &#x27;A&#x27; requested</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Static-的作用"><a href="#Static-的作用" class="headerlink" title="Static 的作用"></a><code>Static</code> 的作用</h1><p><code>static</code> 关键字可以定义局部静态变量、外部静态变量、静态函数、静态成员变量和静态成员函数</p>
+<ul>
+<li><code>static</code> 作用于局部变量，改变了局部变量的生存周期，使得该变量存在于定义后直到程序运行结束的这段时间</li>
+<li><code>static</code> 作用于全局变量和函数，使得全局变量和函数只能在定义它的文件中使用</li>
+<li><code>static</code> 作用于成员变量和成员函数，使得成员变量或成员函数和类有关，可以通过类访问<ul>
+<li>静态成员变量是在类内进行声明，在类外进行定义和初始化</li>
+<li>静态成员变量可以作为成员函数的参数，而普通成员变量不可以</li>
+<li>静态成员变量的类型可以是所属类的类型，而普通成员变量的类型只能是该类类型的指针或引用</li>
+<li>静态成员函数不能调用普通成员变量和成员函数</li>
+<li>静态成员函数没有 <code>this</code> 指针，不能声明为虚函数、<code>const</code> 函数和 <code>volatile</code> 函数</li>
+</ul>
+</li>
+</ul>
+<h1 id="Const-的作用"><a href="#Const-的作用" class="headerlink" title="Const 的作用"></a><code>Const</code> 的作用</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> var;  <span class="comment">// const variable</span></span><br><span class="line">	<span class="built_in">A</span>(<span class="type">int</span> tmp) : <span class="built_in">var</span>(tmp) &#123;&#125;  <span class="comment">// init</span></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">c_fun</span><span class="params">(<span class="type">const</span> <span class="type">int</span> tmp)</span> <span class="type">const</span> <span class="comment">// const member functuon</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">        std::cout &lt;&lt; tmp &lt;&lt; var &lt;&lt; std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>const</code> 修饰成员变量，定义为 <code>const</code> 常量，相较于宏常量，可进行类型检查，节省内存空间，提高了效率<ul>
+<li><code>const</code> 成员变量只能在类内声明与定义，在构造函数初始化列表中初始化</li>
+<li><code>const</code> 成员变量只在某个对象的生存周期内是常量，不能在类的声明中初始化</li>
+</ul>
+</li>
+<li><code>const</code> 修饰函数参数，使得传递过来的函数参数的值不能改变</li>
+<li><code>const</code> 修饰成员函数，定义为 <code>const</code> 成员函数，使得成员函数不能修改任何类型的成员变量，也不能调用非 const 成员函数</li>
+</ul>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">const</span> <span class="type">int</span>* <span class="title">C::Func</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* <span class="type">const</span> p)</span> <span class="type">const</span> </span>&#123;&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一个const：函数返回值是一个指向常量对象的指针</li>
+<li>第二个const：参数p指向的对象是一个常量对象</li>
+<li>第三个const：参数p是一个常量指针</li>
+<li>第四个const：Func函数是const类型的，函数里面不能对成员变量进行修改，也不能调用非const的成员函数</li>
+</ul>
+<h2 id="Define-宏常量-与-Const-常量的区别"><a href="#Define-宏常量-与-Const-常量的区别" class="headerlink" title="Define 宏常量 与 Const 常量的区别"></a><code>Define</code> 宏常量 与 <code>Const</code> 常量的区别</h2><ul>
+<li>编译阶段：宏常量是在编译预处理阶段进行替换，<code>const</code> 是在编译阶段确定其值</li>
+<li>安全性：宏常量只是进行简单的替换，不会进行类型安全的检查；const 常量有类型的，需要进行类型安全检查</li>
+<li>内存占用：宏常量在程序中使用多少次就会进行多少次替换，占用代码段的空间；const 常量占用静态存储区的空间，程序运行过程中只有一份</li>
+<li>调试：宏常量在预编译阶段进行替换，不能调试；const 定义的常量可以进行调试</li>
+</ul>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Xiangrui Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8E%E5%BA%93%E5%87%BD%E6%95%B0/">https://liuxiangrui.github.io/2021/12/13/C++知识学习/C++关键字与库函数/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://liuxiangrui.github.io" target="_blank">Liu Xiangrui's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C++</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++11%E6%96%B0%E7%89%B9%E6%80%A7/"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">C++11新特性</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C++内存管理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiangrui Liu</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a id="card-info-btn" href="/custom_pages/VTM.html"><i class="fas fa-sitemap"></i><span>VTM函数关系图</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LiuXiangrui" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:301100322@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/custom_pages/VTM.html" target="_blank" title="VTM函数调用关系"><i class="fas fa-sitemap"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">最近尝试用js做了一个VTM函数关系图, 欢迎大家提意见～</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Sizeof-%E4%B8%8E-Strlen-%E4%BD%9C%E7%94%A8%E5%88%B0%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E5%88%B0%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">Sizeof 与 Strlen 作用到字符数组到区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Explicit-%E9%81%BF%E5%85%8D%E7%BC%96%E8%AF%91%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">Explicit 避免编译器进行隐式类型转换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Static-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">Static 的作用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Const-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">Const 的作用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.1.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Define-%E5%AE%8F%E5%B8%B8%E9%87%8F-%E4%B8%8E-Const-%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.2.</span> <span class="toc-text">Define 宏常量 与 Const 常量的区别</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xCheckBestAffineMVP/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xCheckBestAffineMVP/" title="无题">无题</a><time datetime="2022-03-01T05:37:59.623Z" title="发表于 2022-03-01 13:37:59">2022-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xAffineMotionEstimation/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xAffineMotionEstimation/" title="无题">无题</a><time datetime="2022-03-01T05:37:23.820Z" title="发表于 2022-03-01 13:37:23">2022-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/28/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostAffineMerge2Nx2N/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/28/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostAffineMerge2Nx2N/" title="无题">无题</a><time datetime="2022-02-27T16:26:40.837Z" title="发表于 2022-02-28 00:26:40">2022-02-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/19/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostInterIMV/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/19/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostInterIMV/" title="无题">无题</a><time datetime="2022-02-18T16:23:12.980Z" title="发表于 2022-02-19 00:23:12">2022-02-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/29/%E5%BE%85%E6%95%B4%E7%90%86/fillAffineMvpCand/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/01/29/%E5%BE%85%E6%95%B4%E7%90%86/fillAffineMvpCand/" title="无题">无题</a><time datetime="2022-01-29T11:54:14.836Z" title="发表于 2022-01-29 19:54:14">2022-01-29</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Xiangrui Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://npm.elemecdn.com/hexo-butterfly-clock/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = '/posts/,/about/,/custom_pages'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://npm.elemecdn.com/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

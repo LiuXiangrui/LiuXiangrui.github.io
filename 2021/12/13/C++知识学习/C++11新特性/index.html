@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C++11新特性 | Liu Xiangrui's Blog</title><meta name="keywords" content="C++"><meta name="author" content="Xiangrui Liu"><meta name="copyright" content="Xiangrui Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="类型推导Auto关键字编译器会在编译期间根据初始值推导通过 auto 定义的变量的类型  auto 要求定义变量时必须初始化变量 auto 不能用于函数传参和推导数组类型  示例123456auto i &#x3D; 5;  &#x2F;&#x2F; type of i is intauto arr &#x3D; new auto(10);  &#x2F;&#x2F; type of arr is int*for (auto iter &#x3D; vec.cbeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++11新特性">
+<meta property="og:url" content="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++11%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="Liu Xiangrui&#39;s Blog">
+<meta property="og:description" content="类型推导Auto关键字编译器会在编译期间根据初始值推导通过 auto 定义的变量的类型  auto 要求定义变量时必须初始化变量 auto 不能用于函数传参和推导数组类型  示例123456auto i &#x3D; 5;  &#x2F;&#x2F; type of i is intauto arr &#x3D; new auto(10);  &#x2F;&#x2F; type of arr is int*for (auto iter &#x3D; vec.cbeg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-12-12T16:30:25.000Z">
+<meta property="article:modified_time" content="2022-02-27T03:49:04.697Z">
+<meta property="article:author" content="Xiangrui Liu">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++11%E6%96%B0%E7%89%B9%E6%80%A7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++11新特性',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-27 11:49:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-clock/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/"><i class="fa-fw fas fa-link"></i><span> 视频编码笔记</span></a></div><div class="menus_item"><a class="site-page" href="/custom_pages/VTM.html"><i class="fa-fw fas fa-sitemap"></i><span> VTM函数调用关系</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liu Xiangrui's Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.notion.so/xiangruiliu/72d28e4885c2427c80593a773ca2b42c?v=3a9dddf3261142409d2e71ff1c5fccc0/"><i class="fa-fw fas fa-link"></i><span> 视频编码笔记</span></a></div><div class="menus_item"><a class="site-page" href="/custom_pages/VTM.html"><i class="fa-fw fas fa-sitemap"></i><span> VTM函数调用关系</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++11新特性</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-12T16:30:25.000Z" title="发表于 2021-12-13 00:30:25">2021-12-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-02-27T03:49:04.697Z" title="更新于 2022-02-27 11:49:04">2022-02-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="类型推导"><a href="#类型推导" class="headerlink" title="类型推导"></a>类型推导</h1><h2 id="Auto关键字"><a href="#Auto关键字" class="headerlink" title="Auto关键字"></a>Auto关键字</h2><p>编译器会在编译期间根据初始值推导通过 <code>auto</code> 定义的变量的类型</p>
+<ul>
+<li><code>auto</code> 要求定义变量时必须初始化变量</li>
+<li><code>auto</code> 不能用于函数传参和推导数组类型</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> i = <span class="number">5</span>;  <span class="comment">// type of i is int</span></span><br><span class="line"><span class="keyword">auto</span> arr = <span class="keyword">new</span> <span class="built_in">auto</span>(<span class="number">10</span>);  <span class="comment">// type of arr is int*</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> iter = vec.<span class="built_in">cbegin</span>(); iter != vec.<span class="built_in">cend</span>(); iter++) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Decltype关键字"><a href="#Decltype关键字" class="headerlink" title="Decltype关键字"></a>Decltype关键字</h2><p>编译器会在编译期间根据表达式的类型推到通过 <code>decltype</code> 定义的变量类型</p>
+<ul>
+<li><code>decltype</code> 不要求定义变量时初始化变量</li>
+</ul>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> y = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">decltype</span>(x+y) z;</span><br></pre></td></tr></table></figure>
+<h2 id="拖尾返回类型"><a href="#拖尾返回类型" class="headerlink" title="拖尾返回类型"></a>拖尾返回类型</h2><p>编译器会在编译期间推导返回值类型</p>
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">add</span><span class="params">(T x, U y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ 捕获列表 ] ( 参数列表 ) 函数选项 -&gt; 返回值类型 &#123; 函数体; &#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="捕获列表"><a href="#捕获列表" class="headerlink" title="捕获列表"></a>捕获列表</h3><ul>
+<li><code>[]</code>：不捕获任何变量</li>
+<li><code>[&amp;]</code>：捕获外部作用域中所有变量，并作为引用在函数体中使用（按引用捕获）</li>
+<li><code>[=]</code>：捕获外部作用域中所有变量，并作为副本在函数体中使用(按值捕获)</li>
+<li><code>[foo]</code>：按值捕获变量 <code>foo</code></li>
+<li><code>[&amp;foo]</code>：按引用捕获变量 <code>foo</code></li>
+<li><code>[this]</code>；捕获当前类的this指针，让Lambda表达式拥有和当前类成员函数同样的访问权限</li>
+</ul>
+<h3 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h3><ul>
+<li>(可选的)参数列表与普通函数的相同</li>
+</ul>
+<h3 id="函数选项"><a href="#函数选项" class="headerlink" title="函数选项"></a>函数选项</h3><ul>
+<li>选填 <code>mutable, exception, attribute</code></li>
+<li><code>mutable</code>：允许Lambda表达式的代码修改被捕获的变量，并且可以访问被捕获的对象的Non-const方法</li>
+<li><code>exception</code>：说明Lambda表达式是否抛出异常以及何种异常</li>
+<li><code>attribute</code>：声明属性</li>
+</ul>
+<h3 id="返回值类型"><a href="#返回值类型" class="headerlink" title="返回值类型"></a>返回值类型</h3><ul>
+<li>返回值类型为可选的</li>
+</ul>
+<h2 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">auto</span> f = [&amp;a] &#123; <span class="keyword">return</span> a; &#125;;</span><br><span class="line"></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; arr = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;;</span><br><span class="line"><span class="type">int</span> even_count = <span class="number">0</span>;</span><br><span class="line">for_each(a.<span class="built_in">begin</span>(), a.<span class="built_in">end</span>(), [&amp;even_count](<span class="type">int</span> val) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!(val &amp; <span class="number">1</span>)) &#123;</span><br><span class="line">        ++even_count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;The number of even is &quot;</span> &lt;&lt; even_count &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+<h1 id="基于范围的For循环"><a href="#基于范围的For循环" class="headerlink" title="基于范围的For循环"></a>基于范围的For循环</h1><h2 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;i : arr) &#123;    </span><br><span class="line">    std::cout &lt;&lt; i &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Delete-和-Default-关键字"><a href="#Delete-和-Default-关键字" class="headerlink" title="Delete 和 Default 关键字"></a><code>Delete</code> 和 <code>Default</code> 关键字</h1><ul>
+<li><code>delete</code> 表示函数不能被调用</li>
+<li><code>default</code> 表示编译器生成默认的函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">A</span>() = <span class="keyword">default</span>; <span class="comment">// 表示使用默认的构造函数</span></span><br><span class="line">	~<span class="built_in">A</span>() = <span class="keyword">default</span>;	<span class="comment">// 表示使用默认的析构函数</span></span><br><span class="line">	<span class="built_in">A</span>(<span class="type">const</span> A &amp;) = <span class="keyword">delete</span>; <span class="comment">// 表示类的对象禁止拷贝构造</span></span><br><span class="line">	A &amp;<span class="keyword">operator</span>=(<span class="type">const</span> A &amp;) = <span class="keyword">delete</span>; <span class="comment">// 表示类的对象禁止拷贝赋值</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Xiangrui Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://liuxiangrui.github.io/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++11%E6%96%B0%E7%89%B9%E6%80%A7/">https://liuxiangrui.github.io/2021/12/13/C++知识学习/C++11新特性/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://liuxiangrui.github.io" target="_blank">Liu Xiangrui's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C++</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/29/%E5%BE%85%E6%95%B4%E7%90%86/fillAffineMvpCand/"><img class="prev-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2021/12/13/C++%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0/C++%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8E%E5%BA%93%E5%87%BD%E6%95%B0/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C++关键字与库函数</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiangrui Liu</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a id="card-info-btn" href="/custom_pages/VTM.html"><i class="fas fa-sitemap"></i><span>VTM函数关系图</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LiuXiangrui" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:301100322@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/custom_pages/VTM.html" target="_blank" title="VTM函数调用关系"><i class="fas fa-sitemap"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">最近尝试用js做了一个VTM函数关系图, 欢迎大家提意见～</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC"><span class="toc-number">1.</span> <span class="toc-text">类型推导</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Auto%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.1.</span> <span class="toc-text">Auto关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Decltype%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.2.</span> <span class="toc-text">Decltype关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%96%E5%B0%BE%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">拖尾返回类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="toc-number">1.3.1.</span> <span class="toc-text">示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%95%E8%8E%B7%E5%88%97%E8%A1%A8"><span class="toc-number">2.1.1.</span> <span class="toc-text">捕获列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="toc-number">2.1.2.</span> <span class="toc-text">参数列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E9%80%89%E9%A1%B9"><span class="toc-number">2.1.3.</span> <span class="toc-text">函数选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.4.</span> <span class="toc-text">返回值类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="toc-number">2.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E8%8C%83%E5%9B%B4%E7%9A%84For%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.</span> <span class="toc-text">基于范围的For循环</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="toc-number">3.1.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Delete-%E5%92%8C-Default-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">4.</span> <span class="toc-text">Delete 和 Default 关键字</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xCheckBestAffineMVP/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xCheckBestAffineMVP/" title="无题">无题</a><time datetime="2022-03-01T05:37:59.623Z" title="发表于 2022-03-01 13:37:59">2022-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xAffineMotionEstimation/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/03/01/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DInterSearch_xAffineMotionEstimation/" title="无题">无题</a><time datetime="2022-03-01T05:37:23.820Z" title="发表于 2022-03-01 13:37:23">2022-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/28/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostAffineMerge2Nx2N/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/28/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostAffineMerge2Nx2N/" title="无题">无题</a><time datetime="2022-02-27T16:26:40.837Z" title="发表于 2022-02-28 00:26:40">2022-02-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/19/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostInterIMV/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/02/19/VTM%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/EncoderLib/%5Bundo%5DEncCu_xCheckRDCostInterIMV/" title="无题">无题</a><time datetime="2022-02-18T16:23:12.980Z" title="发表于 2022-02-19 00:23:12">2022-02-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/29/%E5%BE%85%E6%95%B4%E7%90%86/fillAffineMvpCand/" title="无题"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2022/01/29/%E5%BE%85%E6%95%B4%E7%90%86/fillAffineMvpCand/" title="无题">无题</a><time datetime="2022-01-29T11:54:14.836Z" title="发表于 2022-01-29 19:54:14">2022-01-29</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Xiangrui Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://npm.elemecdn.com/hexo-butterfly-clock/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = '/posts/,/about/,/custom_pages'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://npm.elemecdn.com/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
